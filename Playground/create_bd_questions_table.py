@@ -1,6 +1,6 @@
 import mysql.connector
 import json
-import tqdm
+from tqdm import tqdm
 import time
 
 db = mysql.connector.connect(
