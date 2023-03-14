@@ -3,11 +3,13 @@ import json
 from tqdm import tqdm
 import time
 
+from Playground.helperGPT import QuestionAnswerGPT
+
 db = mysql.connector.connect(
     host='localhost',
-    user='Antho',
-    passwd='Antho1010',
-    database='project_database'
+    user='root',
+    passwd='root',
+    database='Answers'
 )
 
 mycursor = db.cursor()
@@ -26,10 +28,13 @@ mycursor.execute("CREATE TABLE questions(id INT NOT NULL,question VARCHAR(300) N
 count = 0
 time_start = time.time()
 
+model = QuestionAnswerGPT()
+
 for sample in tqdm(data):
     count += 1
     try:
         question = sample['question'].replace("'", "''") # replace apostrophes with two apostrophes
+        answer = model.getAnswer()
         string = f"INSERT INTO questions (id, question, answer) VALUES ({question_id}, '{question}', ' ');"
         mycursor.execute(string)
         db.commit()
@@ -38,6 +43,7 @@ for sample in tqdm(data):
         # rows = mycursor.fetchall()
         # for row in rows:
         #     print(row)
+
     except mysql.connector.Error as error:
         print("Error occurred: {}".format(error))
         missed_index.append(question_id)
