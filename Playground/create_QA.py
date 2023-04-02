@@ -2,14 +2,13 @@ import mysql.connector
 import json
 import time
 from tqdm import tqdm
-# from helperGPT import *
 from helperGPT import QuestionAnswerGPT
 
 db = mysql.connector.connect(
     host='localhost',
     user='root',
-    passwd='root',
-    database='mydatabase'
+    passwd='N1c0o9a5$',
+    database='mydatabases'
 
 )
 
@@ -36,7 +35,7 @@ mycursor = db.cursor()
 
 
 # Open the JSON file
-with open('../hotpot_dev_fullwiki_v1.json', 'r') as f:
+with open('../database/hotpot_dev_fullwiki_v1.json', 'r') as f:
     # Load the data from the file
     data = json.load(f)
     # max length question is 274
@@ -53,13 +52,13 @@ model = QuestionAnswerGPT()
 # # create timer to make sure there is a maximum of 20 queries per minute
 count = 0
 time_start = time.time()
-question_id = 2472
-questions = list(tqdm(data))
+question_id = 5644
+questions = list(data)
 
 
 
-for sample in questions[2472:]:
-    # break
+for sample in tqdm(questions[5644:], desc = 'Answering Questions'):
+   #print(f'question id is {question_id}')
    count += 1
    try:
         question = sample['question'].replace("\"", "'")
@@ -79,60 +78,6 @@ for sample in questions[2472:]:
 
    if count % 20 == 0:
        count = 0
-       if time.time() - time_start < 240:
-           time.sleep(240 - (time.time() - time_start))
-
-
-
-
-
-
-
-
-# answer = model.getAnswer(question)
-# answer = answer['choices'][0]['message']['content']
-
-#
-# try:
-#     question = question.replace("\"", "'")
-#     answer = answer = answer['choices'][0]['message']['content'].replace("\"", "'")
-#     string = f"INSERT INTO questions (id, question , answer) VALUES (\"{question_id}\" , \"{question}\" , \"{answer}\" );"
-#
-#     mycursor.execute(string)
-#     db.commit()
-# except mysql.connector.Error as error:
-#     print("Error occurred: {}".format(error))
-#     missed_index.append(question_id)
-
-# print(answer)
-
-#S
-#
-# print(f'missing index are the following: ')
-# for elem in missed_index:
-#     print(f'-> {elem}')
-#
-#
-# mycursor.close()
-# db.close()
-#
-
-
-
-
-
-
-#
-#        question = sample['question'].replace("'", "''")
-#        answer = model.getAnswer(question)['choices'][0]['message']['content']
-#          answer = answer.replace()
-#         question = question.replace("\"", "'")
-#         answer = answer.replace("\"", "'")
-#         string = f"INSERT INTO questions (id, question , answer) VALUES (\"{question_id}\" , \"{question}\" , \"{answer}\" );"
-#
-#         mycursor.execute(string)
-#         db.commit()
-#        question_id +=1
-#
-
-
+       if time.time() - time_start < 70:
+           time.sleep(70 - (time.time() - time_start))
+           time_start = time.time()
