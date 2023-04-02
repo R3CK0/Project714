@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import mysql.connector
 import json
 import time
@@ -15,6 +16,7 @@ db = mysql.connector.connect(
 )
 
 mycursor = db.cursor()
+
 # mycursor.execute("CREATE DATABASE mydatabase")
 # mycursor.execute("CREATE TABLE questions (id INT PRIMARY KEY, question VARCHAR(300), answer VARCHAR("
 #                    "2000))")
@@ -36,7 +38,7 @@ mycursor = db.cursor()
 
 
 # Open the JSON file
-with open('../hotpot_test_fullwiki_v1.json', 'r') as f:
+with open('../hotpot_dev_fullwiki_v1.json', 'r') as f:
     # Load the data from the file
     data = json.load(f)
     # max length question is 274
@@ -53,12 +55,12 @@ model = QuestionAnswerGPT()
 # # create timer to make sure there is a maximum of 20 queries per minute
 count = 0
 time_start = time.time()
-question_id = 7329
+question_id = 2472
 questions = list(tqdm(data))
 
 
 
-for sample in questions[7329:]:
+for sample in questions[2472:]:
     # break
    count += 1
    try:
@@ -66,7 +68,7 @@ for sample in questions[7329:]:
         answer = model.getAnswer(question)['choices'][0]['message']['content']
         answer = answer.replace("\"", "'")
 
-        string = f"INSERT INTO questions (id, question , answer) VALUES (\"{question_id}\" , \"{question}\" , \"{answer}\" );"
+        string = f"INSERT INTO devset (id, question , answer) VALUES (\"{question_id}\" , \"{question}\" , \"{answer}\" );"
         question_id +=1
         mycursor.execute(string)
         db.commit()
@@ -79,8 +81,8 @@ for sample in questions[7329:]:
 
    if count % 20 == 0:
        count = 0
-       if time.time() - time_start < 60:
-           time.sleep(60 - (time.time() - time_start))
+       if time.time() - time_start < 240:
+           time.sleep(240 - (time.time() - time_start))
 
 
 
