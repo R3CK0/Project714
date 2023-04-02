@@ -1,11 +1,9 @@
-<<<<<<< HEAD
 import mysql.connector
 import json
 import time
 from tqdm import tqdm
 # from helperGPT import *
-
-from Playground.helperGPT import QuestionAnswerGPT
+from helperGPT import QuestionAnswerGPT
 
 db = mysql.connector.connect(
     host='localhost',
