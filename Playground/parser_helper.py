@@ -1,6 +1,6 @@
 import enum
 import re
-import requests
+import wikipediaapi
 import openai
 
 
@@ -30,30 +30,18 @@ class ModelType(enum.Enum):
     
 
 def call_wiki_API(search:str):
-    # Define the base URL of the Wikipedia API
-    WIKIPEDIA_API_URL = "https://en.wikipedia.org/w/api.php"
+    wiki_wiki = wikipediaapi.Wikipedia('en')
+    # search for pages related to 'python'
+    search_results = wiki_wiki.search(search)
 
-    # Define the search parameters
-    search_params = {
-        "action": "query",
-        "list": "search",
-        "srsearch": search,
-        "format": "json"
-    }
-
-    # Send the HTTP GET request to the API and get the JSON response
-    response = requests.get(WIKIPEDIA_API_URL, params=search_params)
-    response_json = response.json()
-
-    # Extract the search results from the JSON response
-    search_results = response_json["query"]["search"]
-
-    # Print the title and snippet of each search result
+    # print the title and summary of each search result
     # for result in search_results:
-    #     print(f"Title: {result['title']}")
-    #     print(f"Snippet: {result['snippet']}")
-    #     print("=" * 50)
-    return search_results
+    #     page = wiki_wiki.page(result)
+    #     print(page.title, ":", page.summary)
+    #     page = wiki_wiki.page(search)
+    page = wiki_wiki.page(search_results[0])
+    return page.summary
+
 
 def remove_pattern(text: str, pattern: str) -> tuple:
     # Compile the regex pattern
