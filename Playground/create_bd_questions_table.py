@@ -2,8 +2,7 @@ import mysql.connector
 import json
 from tqdm import tqdm
 import time
-
-from Playground.helperGPT import QuestionAnswerGPT
+from helperGPT import QuestionAnswerGPT
 
 db = mysql.connector.connect(
     host='localhost',
