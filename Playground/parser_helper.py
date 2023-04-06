@@ -1,12 +1,29 @@
 import enum
 import re
 import requests
+import openai
 
-#TODO
-# model classifier
+
+class QuestionClassifierGPT:
+    def __init__(self):
+        self.API_KEY = open("../../OpenAIApproach/OpenAIAPIKey.txt", "r").read()
+        #self.API_KEY = open("../openaikey.txt", "r").read()
+        openai.api_key = self.API_KEY
+
+    def classify_question(question):
+        return openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a usefull assistant that classify questions into 2 categories that are math or text."},
+                                                                                {"role": "user", "content": question}], max_tokens=1)
 
 # model reformating answer
+class ReformatorGPT:
+    def __init__(self):
+        self.API_KEY = open("../../OpenAIApproach/OpenAIAPIKey.txt", "r").read()
+        #self.API_KEY = open("../openaikey.txt", "r").read()
+        openai.api_key = self.API_KEY
 
+    def reformatAnswer(self, text):
+        return openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a usefull assistant that rephase the text that you receive."},
+                                                                                {"role": "user", "content": question}], max_tokens=500)
 class ModelType(enum.Enum):
     math = 'math'
     wiki = 'wiki'
@@ -95,10 +112,11 @@ def parse_wiki(input:str):
     return text
 
 def parse_answer(input:str, model_type):
+    formator = ReformatorGPT()
     if(model_type == ModelType.math):
         answer = parse_math(input)
     elif(model_type == ModelType.wiki):
         answer = parse_wiki()
     else:
         print(f'There was an error, no model type {model_type} exist...')
-    return answer
+    return formator.reformatAnswer(answer)
