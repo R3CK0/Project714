@@ -2,7 +2,7 @@ import mysql.connector
 import json
 from tqdm import tqdm
 import time
-from helperGPT import QuestionAnswerGPT
+from GPT_tools import AnswerModel
 
 class Database:
     
@@ -35,7 +35,7 @@ class Database:
 
         # TODO change the models
         model = WholeModel()
-        gpt_model = GPT_Model()
+        gpt_model = AnswerModel()
 
         for sample in tqdm(data):
             count += 1
