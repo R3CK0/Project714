@@ -19,7 +19,13 @@ class ToolKit():
 
     # TODO : Complete qa API and improve math API
     def call_qa_api(self, query: str):
+        # is that google api?
         pass
 
     def call_math_api(self, query: str):
-        return eval(query)
+        try:
+            result = str(eval(query))
+        except:
+            result = "Error: Invalid expression"
+        return result
+    

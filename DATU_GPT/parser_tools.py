@@ -1,10 +1,12 @@
 import enum
 import re
 import wikipediaapi
+from api_tools import ToolKit
 
 class Manipulator():
 
     def __init__(self):
+        tool = ToolKit()
         pass
 
     class ModelType(enum.Enum):
@@ -45,38 +47,38 @@ class Manipulator():
         return original_str[:pos] + insert_str + original_str[pos:]
 
     # TODO: Check if logic pan's out
-    def parse_math(self, text: str, tool):
+    def parse_math(self, text: str):
         indexes, paterns_removed = self.find_and_extract_all(text, '^\[Calculator<[0-9a-zA-Z\p{Sm}]*>\]$')
         for i in range(len(paterns_removed)):
             patern_removed = patern_removed[12:-2]
             try:
-                result = tool.call_math_api(patern_removed)
+                result = self.tool.call_math_api(patern_removed)
                 text = self.insert_string(text, result, indexes[i])
             except NameError as e:
                 print(str(e))
         return text
 
-    def parse_wiki(self, input: str, tool):
+    def parse_wiki(self, text: str):
         # find pattern remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(input, '\[Wiki<.*?>\]')
+        indexes, paterns_removed = self.find_and_extract_all(text, '\[Wiki<.*?>\]')
         for i in range(len(paterns_removed)):
             patern_removed = patern_removed[7:-2]
             try:
                 # call wiki api
-                result = tool.call_wiki_API(patern_removed)
+                result = self.tool.call_wiki_API(patern_removed)
                 text = self.insert_string(text, result, indexes[i])
             except NameError as e:
                 print(str(e))
         return text
 
-    def parse_qa(self, input: str, tool):
+    def parse_qa(self, text: str):
         # find patten remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(input, '\[QA<.*?>\]')
+        indexes, paterns_removed = self.find_and_extract_all(text, '\[QA<.*?>\]')
         for i in range(len(paterns_removed)):
             patern_removed = patern_removed[5:-2]
             try:
-                # call wiki api
-                result = tool.call_qa_API(patern_removed)
+                # call qa api
+                result = self.tool.call_qa_API(patern_removed)
                 text = self.insert_string(text, result, indexes[i])
             except NameError as e:
                 print(str(e))
@@ -85,15 +87,14 @@ class Manipulator():
     def get_content(self, input):
         return input["choices"][0]["message"]["content"]
 
-    # TODO : complete these functions
-    def use_tools(self, input, tool):
-        pass
-
     def extract_API_call(self, input):
-        pass
+        return self.parse_math(self.parse_wiki(self.parse_qa(input)))
 
     def reformat_sub_answers(self, answer, grammarModel):
+        # Do we need that?
         pass
 
     def recomposition_format(self, question, sub_answers):
-        pass
+        sub_answers_concaneted = " ".join(sub_answers)
+        return 'Question: ' + question + '\nFacts: ' + sub_answers_concaneted
+        
