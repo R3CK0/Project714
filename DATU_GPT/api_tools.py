@@ -1,19 +1,27 @@
 import wikipediaapi
+import urllib.parse
+import requests
 
 class ToolKit():
     def __init__(self):
         pass
+    
+    def url_encode(self, string):
+        return urllib.parse.quote_plus(string)
+
+    def make_request(self, url, params):
+        response = requests.get(url, params=params)
+        if response.status_code == 200:
+            try:
+                return response.content.decode('utf-8')
+            except UnicodeDecodeError:
+                return response.content.decode('ISO-8859-1')
+        else:
+            return None
 
     def call_wiki_API(self, query: str):
         wiki_wiki = wikipediaapi.Wikipedia('en')
-        # search for pages related to 'python'
         search_results = wiki_wiki.search(query)
-
-        # print the title and summary of each search result
-        # for result in search_results:
-        #     page = wiki_wiki.page(result)
-        #     print(page.title, ":", page.summary)
-        #     page = wiki_wiki.page(search)
         page = wiki_wiki.page(search_results[0])
         return page.summary
 
@@ -21,11 +29,15 @@ class ToolKit():
     def call_qa_api(self, query: str):
         # is that google api?
         pass
+    
 
     def call_math_api(self, query: str):
-        try:
-            result = str(eval(query))
-        except:
+        params = {"appid": '74UV94-Q95PR46UGT', "i": query}
+        result = self.make_request("http://api.wolframalpha.com/v2/result", params)
+        if result is None:
             result = "Error: Invalid expression"
+        #result = str(eval(query))
         return result
+    
+
     
