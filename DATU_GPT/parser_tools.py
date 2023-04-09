@@ -44,6 +44,7 @@ class Manipulator():
     def insert_string(self, original_str, insert_str, pos):
         return original_str[:pos] + insert_str + original_str[pos:]
 
+    # TODO: Check if logic pan's out
     def parse_math(self, text: str, tool):
         indexes, paterns_removed = self.find_and_extract_all(text, '^\[Calculator<[0-9a-zA-Z\p{Sm}]*>\]$')
         for i in range(len(paterns_removed)):
