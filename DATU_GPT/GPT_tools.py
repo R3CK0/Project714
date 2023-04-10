@@ -5,81 +5,92 @@ class ModelSelector:
         pass
 
     def getModel(self, question):
-        return openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are an assistant is a classification model that classifies questions in order for them to be answered by one of four tools: Wiki, Math, QA, Human."},
-                                                                             {"role": "user", "content": "Can you tell me about the history of the Taj Mahal?"},
-                                                                             {"role": "assistant", "content": "[Wiki]"},
-                                                                             {"role": "user", "content": "What is the square root of 64?"},
-                                                                             {"role": "assistant", "content": "[Math]"},
-                                                                             {"role": "user", "content": "What is the best way to learn a new language?"},
-                                                                             {"role": "assistant", "content": "[QA]"},
-                                                                             {"role": "user", "content": "What is your favorite movie?"},
-                                                                             {"role": "assistant", "content": "[Human]"},
-                                                                             {"role": "user", "content": "What is the definition of an adjective?"},
-                                                                             {"role": "assistant", "content": "[Wiki]"},
-                                                                             {"role": "user", "content": "How do I make pancakes from scratch?"},
-                                                                             {"role": "assistant", "content": "[QA]"},
-                                                                             {"role": "user", "content": "What is the population of Tokyo?"},
-                                                                             {"role": "assistant", "content": "[Wiki]"},
-                                                                             {"role": "user", "content": "What is the value of e?"},
-                                                                             {"role": "assistant", "content": "[Math]"},
-                                                                             {"role": "user", "content": "What is the meaning of life?"},
-                                                                             {"role": "assistant", "content": "[QA]"},
-                                                                             {"role": "user", "content": "What is your favorite color?"},
-                                                                             {"role": "assistant", "content": "[Human]"},
-                                                                             {"role": "user", "content": "Can you explain the process of photosynthesis?"},
-                                                                             {"role": "assistant", "content": "[Wiki]"},
-                                                                             {"role": "user", "content": "What is the sum of 2+2?"},
-                                                                             {"role": "assistant", "content": "[Math]"},
-                                                                             {"role": "user", "content": "What are the symptoms of COVID-19?"},
-                                                                             {"role": "assistant", "content": "[QA]"},
-                                                                             {"role": "user", "content": "What is your favorite book?"},
-                                                                             {"role": "assistant", "content": "[Human]"},
-                                                                             {"role": "user", "content": "What is the capital of France?"},
-                                                                             {"role": "assistant", "content": "[Wiki]"},
-                                                                             {"role": "user", "content": "How can I improve my writing skills?"},
-                                                                             {"role": "assistant", "content": "[QA]"},
-                                                                             {"role": "user", "content": "What is the height of Mount Everest?"},
-                                                                             {"role": "assistant", "content": "[Wiki]"},
-                                                                             {"role": "user", "content": "What is the value of pi?"},
-                                                                             {"role": "assistant", "content": "[Math]"},
-                                                                             {"role": "user", "content": "What is the difference between affect and effect?"},
-                                                                             {"role": "assistant", "content": "[QA]"},
-                                                                             {"role": "user", "content": "What is your favorite type of music?"},
-                                                                             {"role": "assistant", "content": "[Human]"},
-                                                                             {"role":"user", "content":"What are the coordinates of the two points?"},
-                                                                             {"role":"assistant", "content":"[Human]"},
-                                                                             {"role": "user", "content": question}], max_tokens=500)
+        try:
+            answer = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are an assistant is a classification model that classifies questions in order for them to be answered by one of four tools: Wiki, Math, QA, Human."},
+                                                                                 {"role": "user", "content": "Can you tell me about the history of the Taj Mahal?"},
+                                                                                 {"role": "assistant", "content": "[Wiki]"},
+                                                                                 {"role": "user", "content": "What is the square root of 64?"},
+                                                                                 {"role": "assistant", "content": "[Math]"},
+                                                                                 {"role": "user", "content": "What is the best way to learn a new language?"},
+                                                                                 {"role": "assistant", "content": "[QA]"},
+                                                                                 {"role": "user", "content": "What is your favorite movie?"},
+                                                                                 {"role": "assistant", "content": "[Human]"},
+                                                                                 {"role": "user", "content": "What is the definition of an adjective?"},
+                                                                                 {"role": "assistant", "content": "[Wiki]"},
+                                                                                 {"role": "user", "content": "How do I make pancakes from scratch?"},
+                                                                                 {"role": "assistant", "content": "[QA]"},
+                                                                                 {"role": "user", "content": "What is the population of Tokyo?"},
+                                                                                 {"role": "assistant", "content": "[Wiki]"},
+                                                                                 {"role": "user", "content": "What is the value of e?"},
+                                                                                 {"role": "assistant", "content": "[Math]"},
+                                                                                 {"role": "user", "content": "What is the meaning of life?"},
+                                                                                 {"role": "assistant", "content": "[QA]"},
+                                                                                 {"role": "user", "content": "What is your favorite color?"},
+                                                                                 {"role": "assistant", "content": "[Human]"},
+                                                                                 {"role": "user", "content": "Can you explain the process of photosynthesis?"},
+                                                                                 {"role": "assistant", "content": "[Wiki]"},
+                                                                                 {"role": "user", "content": "What is the sum of 2+2?"},
+                                                                                 {"role": "assistant", "content": "[Math]"},
+                                                                                 {"role": "user", "content": "What are the symptoms of COVID-19?"},
+                                                                                 {"role": "assistant", "content": "[QA]"},
+                                                                                 {"role": "user", "content": "What is your favorite book?"},
+                                                                                 {"role": "assistant", "content": "[Human]"},
+                                                                                 {"role": "user", "content": "What is the capital of France?"},
+                                                                                 {"role": "assistant", "content": "[Wiki]"},
+                                                                                 {"role": "user", "content": "How can I improve my writing skills?"},
+                                                                                 {"role": "assistant", "content": "[QA]"},
+                                                                                 {"role": "user", "content": "What is the height of Mount Everest?"},
+                                                                                 {"role": "assistant", "content": "[Wiki]"},
+                                                                                 {"role": "user", "content": "What is the value of pi?"},
+                                                                                 {"role": "assistant", "content": "[Math]"},
+                                                                                 {"role": "user", "content": "What is the difference between affect and effect?"},
+                                                                                 {"role": "assistant", "content": "[QA]"},
+                                                                                 {"role": "user", "content": "What is your favorite type of music?"},
+                                                                                 {"role": "assistant", "content": "[Human]"},
+                                                                                 {"role":"user", "content":"What are the coordinates of the two points?"},
+                                                                                 {"role":"assistant", "content":"[Human]"},
+                                                                                 {"role": "user", "content": question}], max_tokens=500)
+        except:
+            print("Error: ModelSelectorModel")
+        return answer
 
 class GrammarParser:
     def __init__(self):
         pass
 
     def parse(self, text):
-        return openai.ChatCompletion.create(model="gpt-3.5-turbo",
-                                            messages = [{"role": "system", "content": "You are a model that takes in a text that has a part contained in [ ] and summarizes that part to fit with the rest of the text in order for the paragraph to make sense. "},
-                                                        {"role": "user", "content": "My favorite type of cake is [Cheesecake is a sweet dessert consisting of one or more layers. The main, and thickest layer, consists of a mixture of soft, fresh cheese (typically cream cheese or ricotta), eggs, and sugar. If there is a bottom layer, it often consists of a crust or base made from crushed cookies, graham crackers, or pastry. The classic flavor of cheesecake is plain, but it can be flavored or topped with fruit, whipped cream, nuts, cookies, chocolate syrup, or even caramel sauce. Cheesecake can be baked or unbaked (usually refrigerated). Baked cheesecake usually has a firmer texture and a slightly browned top, while unbaked cheesecake is softer and creamier. Cheesecakes are usually served chilled, and they can be stored in the refrigerator for several days.] because it's so rich and creamy."},
-                                                        {"role": "assistant", "content": "Answer: My favorite type of cake is cheesecake, a sweet dessert with layers consisting of a mixture of soft, fresh cheese, eggs, and sugar, and often featuring a crust made from crushed cookies or pastry. It can be baked or unbaked, flavored or topped with various ingredients like fruit, whipped cream, or chocolate syrup. It's my favorite because it's so rich and creamy."},
-                                                        {"role": "user", "content": "I went on vacation to [Hawaii, a group of volcanic islands located in the central Pacific Ocean. It is the 50th state of the United States and is known for its beautiful beaches, lush tropical forests, and diverse culture. The islands offer a wide range of activities, including surfing, snorkeling, hiking, and exploring historical sites like the Pearl Harbor Memorial. Hawaii's cuisine is a unique blend of flavors from various cultures, including Polynesian, Asian, and American influences.] and had a great time."},
-                                                        {"role": "assistant", "content": "Answer: I went on vacation to Hawaii, which is a group of volcanic islands in the central Pacific Ocean known for its beautiful beaches, lush tropical forests, diverse culture, and a range of activities like surfing, snorkeling, hiking, and exploring historical sites. Hawaii also offers a unique cuisine that blends Polynesian, Asian, and American influences and had a great time."},
-                                                        {"role": "user", "content": "I love watching movies directed by [Christopher Nolan, an English film director, producer, and screenwriter. He is best known for his mind-bending and nonlinear storytelling, often exploring themes such as identity, time, memory, and the nature of reality. Some of his most popular films include Memento, Inception, the Dark Knight Trilogy, Interstellar, and Tenet. Nolan's films are known for their complex plots and stunning visuals, and they have earned him numerous awards and critical acclaim.] because they are thought-provoking and visually stunning."},
-                                                        {"role": "assistant", "content": "Answer: I love watching movies directed by Christopher Nolan, an English film director known for his mind-bending and nonlinear storytelling, which often explores themes like identity, time, memory, and reality. His popular films, such as Memento, Inception, the Dark Knight Trilogy, Interstellar, and Tenet, are characterized by complex plots and stunning visuals, earning him numerous awards and critical acclaim. I enjoy his movies because they are thought-provoking and visually stunning."},
-                                                        {"role": "user", "content": text}], max_tokens=500)
+        try:
+            answer = openai.ChatCompletion.create(model="gpt-3.5-turbo",
+                                                messages = [{"role": "system", "content": "You are a model that takes in a text that has a part contained in [ ] and summarizes that part to fit with the rest of the text in order for the paragraph to make sense. "},
+                                                            {"role": "user", "content": "My favorite type of cake is [Cheesecake is a sweet dessert consisting of one or more layers. The main, and thickest layer, consists of a mixture of soft, fresh cheese (typically cream cheese or ricotta), eggs, and sugar. If there is a bottom layer, it often consists of a crust or base made from crushed cookies, graham crackers, or pastry. The classic flavor of cheesecake is plain, but it can be flavored or topped with fruit, whipped cream, nuts, cookies, chocolate syrup, or even caramel sauce. Cheesecake can be baked or unbaked (usually refrigerated). Baked cheesecake usually has a firmer texture and a slightly browned top, while unbaked cheesecake is softer and creamier. Cheesecakes are usually served chilled, and they can be stored in the refrigerator for several days.] because it's so rich and creamy."},
+                                                            {"role": "assistant", "content": "Answer: My favorite type of cake is cheesecake, a sweet dessert with layers consisting of a mixture of soft, fresh cheese, eggs, and sugar, and often featuring a crust made from crushed cookies or pastry. It can be baked or unbaked, flavored or topped with various ingredients like fruit, whipped cream, or chocolate syrup. It's my favorite because it's so rich and creamy."},
+                                                            {"role": "user", "content": "I went on vacation to [Hawaii, a group of volcanic islands located in the central Pacific Ocean. It is the 50th state of the United States and is known for its beautiful beaches, lush tropical forests, and diverse culture. The islands offer a wide range of activities, including surfing, snorkeling, hiking, and exploring historical sites like the Pearl Harbor Memorial. Hawaii's cuisine is a unique blend of flavors from various cultures, including Polynesian, Asian, and American influences.] and had a great time."},
+                                                            {"role": "assistant", "content": "Answer: I went on vacation to Hawaii, which is a group of volcanic islands in the central Pacific Ocean known for its beautiful beaches, lush tropical forests, diverse culture, and a range of activities like surfing, snorkeling, hiking, and exploring historical sites. Hawaii also offers a unique cuisine that blends Polynesian, Asian, and American influences and had a great time."},
+                                                            {"role": "user", "content": "I love watching movies directed by [Christopher Nolan, an English film director, producer, and screenwriter. He is best known for his mind-bending and nonlinear storytelling, often exploring themes such as identity, time, memory, and the nature of reality. Some of his most popular films include Memento, Inception, the Dark Knight Trilogy, Interstellar, and Tenet. Nolan's films are known for their complex plots and stunning visuals, and they have earned him numerous awards and critical acclaim.] because they are thought-provoking and visually stunning."},
+                                                            {"role": "assistant", "content": "Answer: I love watching movies directed by Christopher Nolan, an English film director known for his mind-bending and nonlinear storytelling, which often explores themes like identity, time, memory, and reality. His popular films, such as Memento, Inception, the Dark Knight Trilogy, Interstellar, and Tenet, are characterized by complex plots and stunning visuals, earning him numerous awards and critical acclaim. I enjoy his movies because they are thought-provoking and visually stunning."},
+                                                            {"role": "user", "content": text}], max_tokens=500)
+        except:
+            print("Error: GrammarParser")
+        return answer
 
 class AnswerModel:
     def __init__(self):
         pass
 
     def getAnswer(self, question, type=None):
-        if type == "[Math]":
-            return self.mathModel(question)
-        elif type == "[QA]":
-            return self.qaModel(question)
-        elif type == "[Wiki]":
-            return self.wikiModel(question)
-        elif type == "[Human]":
-            return self.humanAnswer(question)
-        else:
-            return self.completeAnswerModel(question)
+        try:
+            if type == "[Math]":
+                return self.mathModel(question)
+            elif type == "[QA]":
+                return self.qaModel(question)
+            elif type == "[Wiki]":
+                return self.wikiModel(question)
+            elif type == "[Human]":
+                return self.humanAnswer(question)
+            else:
+                return self.completeAnswerModel(question)
+        except:
+            print("Error: AnswerModel")
 
     def mathModel(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo",
@@ -102,7 +113,7 @@ class AnswerModel:
                                                       {"role": "assistant", "content": "A sphere has a volume of 288 cubic cm. To find the radius, we use the formula for the volume of a sphere: V = (4/3) * π * r^3. Rearranging the formula and solving for r, we get: r = [Calculator(((3 * 288) / (4 * 3.14159))^(1/3))] cm (approximately)." },
                                                       {"role": "user", "content": "A rectangular prism has a length of 10 cm, a width of 6 cm, and a height of 4 cm. Calculate the volume and surface area of the prism."},
                                                       {"role": "assistant", "content": "A rectangular prism has a length of 10 cm, a width of 6 cm, and a height of 4 cm. The volume of the prism is [Calculator(10 * 6 * 4)] cubic cm. The surface area of the prism is [Calculator(2 * (10 * 6 + 10 * 4 + 6 * 4))] square cm."},
-                                                      {"role": "user", "content": question}], max_tokens=1000)
+                                                      {"role": "user", "content": question}], max_tokens=500)
 
     def qaModel(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo",
@@ -125,7 +136,7 @@ class AnswerModel:
                                                       {"role": "assistant", "content": "The speed of light is approximately [QA('What is the speed of light in a vacuum in meters per second?')] meters per second in a vacuum."},
                                                       {"role": "user", "content": "What is the significance of the Mona Lisa?"},
                                                       {"role": "assistant", "content": "The Mona Lisa is significant because it is a masterpiece by [QA('Who painted the Mona Lisa?')] and is known for its [QA('What are some features that make the Mona Lisa famous?')]."},
-                                                      {"role": "user", "content": question}], max_tokens=1200)
+                                                      {"role": "user", "content": question}], max_tokens=500)
 
     def wikiModel(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo",
@@ -158,10 +169,10 @@ class AnswerModel:
                                                       {"role": "assistant", "content": "The scientific name for the process of plants converting sunlight into energy is [Wiki(Photosynthesis)]."},
                                                       {"role": "user", "content": "What is the smallest country in the world by land area?"},
                                                       {"role": "assistant", "content": "The smallest country in the world by land area is [Wiki(Vatican City)]."},
-                                                      {"role": "user", "content": question}], max_tokens=750)
+                                                      {"role": "user", "content": question}], max_tokens=500)
 
     def completeAnswerModel(self, query):
-        return openai.ChatCompletion.create(engine="gpt-3.5-turbo", messages=[
+        answer = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[
                                             {"role": "system", "content": "the goal of the assistant is to answer questions with the use of outside tools. The tools allow to access computing and API of different websites to obtain correct results. These are the tools : [Calculator(equation)], [Wiki(subject)], [QA(question)].\n - The Calculator tool is used to solve numerical equations as well as to resolve complex algebraic equations such as calculus problems.\n- The Wiki tool allows to obtain verified information on a subject.\n- The QA tool is used to answer common knowledge questions questions. \nThe assistant is given a main question as well as subquestions that when answered can help produce a better answer to the main question."},
                                             {"role": "user", "content": "How long does it take for a message to travel from Earth to Mars at the speed of light? \n1- What is the minimum and maximum distance between Earth and Mars? \n2- What is the speed of light? \n3- How do we calculate the time it takes for a message to travel between Earth and Mars at the speed of light?"},
                                             {"role": "assistant", "content": "1- The minimum and maximum distance between Earth and Mars varies depending on their positions in their respective orbits. The minimum distance, called closest approach, occurs when Mars is at opposition and can be as short as [x, QA(Waht is the closest approach between earth and mars in millions of kilometers)] million kilometers. The maximum distance occurs when Mars and Earth are on opposite sides of the Sun, and can be up to [z, QA(What is the maximum disctance between the earth and mars in millions of kilometers?)] million kilometers. \n2- The speed of light in a vacuum is approximately [y, QA(What is the speed of light in a vaccum in km/s?)] kilometers per second. \n3- To calculate the time it takes for a message to travel between Earth and Mars at the speed of light, we can use the formula t = d / c, where t is the time, d is the distance between Earth and Mars, and c is the speed of light. For the minimum and maximum distances calculated in subquestion 1, the time it takes for a message to travel at the speed of light would be:\nMinimum time: [Calculator('t_min = [x]e6 / y')]\nMaximum time: [Calculator('t_max = [z]e6 / 299792')]."},
@@ -171,8 +182,8 @@ class AnswerModel:
                                             {"role": "assistant", "content": "1- To find the antiderivative of e^(-2x), we can use the reverse chain rule. The antiderivative, F(x), is [Calculator(integral(e^(-2x), x))]. \n2- To evaluate an integral with limits from 0 to infinity, we can use the limit concept. We rewrite the integral as the limit of a definite integral with the upper limit t approaching infinity: \nlim (t→∞) ∫[a, t] f(x) dx. \n3- To find the value of the integral of e^(-2x) from 0 to infinity, we can use the antiderivative from subquestion 1 and the limit concept from subquestion 2: \nlim (t→∞) [F(t) - F(0)] = [Calculator((integral(e^(-2x), x, 0, inf))))]."},
                                             {"role": "user", "content": "Can you help me calculate the backpropagation of a small neural network with one hidden layer? Here are the values: \n\nInput layer: x1 = 0.5, x2 = 0.6 \nHidden layer: h1, h2 \nOutput layer: o1 \n\nWeights: \nw1 = 0.1, w2 = 0.2, w3 = 0.3, w4 = 0.4, w5 = 0.5, w6 = 0.6 \n\nActivation function: Sigmoid function \nLoss function: Mean Squared Error (MSE) \n\nTarget output: t1 = 0.8 \n\n1- How do I calculate the forward propagation to find the output value of the network? \n2- How do I calculate the error of the output layer? \n3- How do I update the weights using backpropagation?"},
                                             {"role": "assistant", "content": "1- To calculate the forward propagation, we first need to calculate the weighted sum and activation for the hidden layer neurons and then for the output layer neuron. \n\nFor the hidden layer: \nsum_h1 = w1 * x1 + w2 * x2 \nsum_h2 = w3 * x1 + w4 * x2 \nh1 = sigmoid(sum_h1) \nh2 = sigmoid(sum_h2) \n\nFor the output layer: \nsum_o1 = w5 * h1 + w6 * h2 \no1 = sigmoid(sum_o1) \n\nUsing the given values and sigmoid function: \n[sum_h1, Calculator(0.1 * 0.5 + 0.2 * 0.6)] \n[sum_h2, Calculator( 0.3 * 0.5 + 0.4 * 0.6)] \n[h1, Calculator(1 / (1 + exp(-[sum_h1])))] \n[h2, Calculator(1 / (1 + exp(-sum_h2)))] \n[sum_o1, Calculator(0.5 * h1 + 0.6 * [h2])] \n[o1, Calculator(1 / (1 + exp(-[sum_o1]))')] \n\n2- To calculate the error of the output layer, we'll use the MSE loss function. \n\nE_o1 = 1/2 * (t1 - o1)^2 \n\nUsing the given target output (t1 = 0.8) and calculated output (o1): \n[E_o1, Calculator(1/2 * (0.8 - [o1])^2)] \n\n3- To update the weights using backpropagation, we need to calculate the gradients for each weight and update them accordingly. We'll use the chain rule to find the gradients. \n\nFor weights w5 and w6 (output layer): \ndE_o1_dw5 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dw5 \ndE_o1_dw6 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dw6 \n\nFor weights w1, w2, w3, and w4 (hidden layer): \ndE_o1_dw1 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh1 * dh1/dsum_h1 * dsum_h1/dw1 \ndE_o1_dw2 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh1 * dh1/dsum_h1 * dsum_h1/dw2 \ndE_o1_dw3 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh2 * dh2/dsum_h2 * dsum_h2/dw3 \ndE_o1_dw4 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh2 * dh2/dsum_h2 * dsum_h2/dw4. Now we need to calculate these gradients using the given values and previously calculated values:\n[dE_o1_do1, Calculator(-(0.8 - [o1]))]\n[do1_dsum_o1, Calculator([o1] * (1 - [o1]))]\n[dsum_o1_dh1, Calculator(0.5)]\n[dsum_o1_dh2, Calculator(0.6)]\n[dh1_dsum_h1, Calculator([h1] * (1 - [h1]))]\n[dh2_dsum_h2, Calculator([h2] * (1 - [h2]))]\n\nNow, we can find the gradients:\n\n[dE_o1_dw5, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1])]\n[Calculator('dE_o1_dw6 = [dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2])]\n[dE_o1_dw1, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1] * [dh1_dsum_h1] * 0.5)]\n[dE_o1_dw2, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1] * [dh1_dsum_h1] * 0.6)]\n[dE_o1_dw3, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2] * [dh2_dsum_h2] * 0.5)]\n[dE_o1_dw4, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2] * [dh2_dsum_h2] * 0.6)]\n\nFinally, we can update the weights using a learning rate(let's say 0.1):\n[w1_updated, Calculator([w1] - 0.1 * [dE_o1_dw1])]\n[w2_updated, Calculator([w2] - 0.1 * [dE_o1_dw2])]\n[w3_updated, Calculator([w3] - 0.1 * [dE_o1_dw3])]\n[w4_updated, Calculator([w4] - 0.1 * [dE_o1_dw4])]\n[w5_updated, Calculator([w5] - 0.1 * [dE_o1_dw5])]\n[w6_updated, Calculator([w6] - 0.1 * [dE_o1_dw6])]\nThese updated weights can then be used for the next iteration of training."},
-                                            {"role": "user", "content": query}
-                                            ], max_tokens=4000)
+                                            {"role": "user", "content": query}], max_tokens=500)
+        return answer
 
     def humanAnswer(self, question):
         print(question)

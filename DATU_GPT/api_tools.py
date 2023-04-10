@@ -27,8 +27,10 @@ class ToolKit():
 
     # TODO : Complete qa API and improve math API
     def call_qa_api(self, query: str):
-        # is that google api?
-        pass
+        print("QA API not implemented yet")
+        return input(query + " : ")
+        # return "replace this part using you best judgement"
+
     
 
     def call_math_api(self, query: str):

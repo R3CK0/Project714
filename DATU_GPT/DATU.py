@@ -27,61 +27,70 @@ class DATU:
          sub_question in response]
 
         # Obtain the API requests to complete the sub answers
-        sub_answers = [self.manipulator.get_content(self.divineBeastModel.getAnswer(sub_question, type)) for sub_question, type in
+        sub_answers = [self.manipulator.get_content(self.divineBeastModel.getAnswer("Main Question: "+ question + "sub_question: " + sub_question, type)) for sub_question, type in
                        zip(sub_questions)]
 
         # extract the API call from the sub question and apply tools to obtain sub_answers
-        sub_answers = self.manipulator.use_tools(self.manipulator.extract_API_call(sub_answers), self.tools)
+        sub_answers = self.manipulator.extract_API_call(sub_answers)
 
         # Reformat the sub_answers to the correct format
         sub_answers = self.manipulator.reformat_sub_answers(sub_answers, self.grammarParserModel)
 
         # recompile the sub_answers and main question into an answer and justification
-        answer, justification = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
-        return answer, justification
+        answer = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
+
+        return answer
 
     def method_2_answer(self, question):
-        # get list of decomposed question
-        response = self.decomp_model.getSubQuestions(question)
+        try:
+            # get list of decomposed question
+            response = self.decomp_model.getSubQuestions(question)
 
-        # assign model to each sub question
-        sub_questions = []
-        [sub_questions.append((sub_question, self.manipulator.get_content(self.model_selector.getModel(sub_question)))) for sub_question in response]
+            # assign model to each sub question
+            sub_questions = []
+            [sub_questions.append((sub_question, self.manipulator.get_content(self.model_selector.getModel(sub_question)))) for sub_question in response]
 
-        # Obtain the API requests to complete the sub answers
-        sub_answers = []
-        facts = ""
-        for sub_question, type in zip(sub_questions):
-            sub_answers.append(self.manipulator.get_content(self.divineBeastModel.getAnswer("Facts: " + facts + "Question: " + sub_question, type)))
-            facts = "\n".join(sub_answers)
+            # Obtain the API requests to complete the sub answers
+            sub_answers = []
+            facts = ""
+            for sub_question, type in zip(sub_questions):
+                sub_answers.append(self.manipulator.get_content(self.divineBeastModel.getAnswer("Facts: " + facts + "Question: " + sub_question, type)))
+                facts = "\n".join(sub_answers)
 
-        # extract the API call from the sub question and apply tools to obtain sub_answers
-        sub_answers = self.manipulator.use_tools(self.manipulator.extract_API_call(sub_answers), self.tools)
+            # extract the API call from the sub question and apply tools to obtain sub_answers
+            sub_answers = self.manipulator.extract_API_call(sub_answers)
 
-        # Reformat the sub_answers to the correct format
-        sub_answers = self.manipulator.reformat_sub_answers(sub_answers, self.grammarParserModel)
+            # Reformat the sub_answers to the correct format
+            sub_answers = self.manipulator.reformat_sub_answers(sub_answers, self.grammarParserModel)
 
-        # recompile the sub_answers and main question into an answer and justification
-        answer, justification = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
-        return answer, justification
+            # recompile the sub_answers and main question into an answer and justification
+            answer = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
+        except:
+            print("Error in method 2")
+        return answer
 
     def method_3_answer(self, question):
         # get list of decomposed question
-        response = self.decomp_model.getSubQuestions(question)
+        response = "\n".join(self.decomp_model.getSubQuestions(question))
+        print(response)
 
         # Obtain the API requests to complete the sub answers
-        sub_answers = self.manipulator.get_content(self.divineBeastModel.getAnswer(question + "\n" +response))
+        sub_answers = self.manipulator.get_content(self.divineBeastModel.getAnswer(question + "\n" + response))
+        print(sub_answers)
 
         # extract the API call from the sub question and apply tools to obtain sub_answers
-        sub_answers = self.manipulator.use_tools(self.manipulator.extract_API_call(sub_answers), self.tools)
+        sub_answers = self.manipulator.extract_API_call(sub_answers)
+        print(sub_answers)
 
         # Reformat the sub_answers to the correct format
         sub_answers = self.manipulator.reformat_sub_answers(sub_answers, self.grammarParserModel)
+        print(sub_answers)
 
         # recompile the sub_answers and main question into an answer and justification
-        answer, justification = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
-        return answer, justification
+        answer = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
+        print(answer)
+        return answer
 
-    def traditional_answer(self, question):
+    def base_model_answer(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpfull question answering assistant"},
                                                                              {"role": "user", "content": question}], max_tokens=500)

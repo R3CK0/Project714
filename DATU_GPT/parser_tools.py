@@ -1,5 +1,5 @@
 import enum
-import re
+import regex as re
 import wikipediaapi
 from api_tools import ToolKit
 
@@ -48,11 +48,11 @@ class Manipulator():
         return original_str[:pos] + '[' + insert_str + ']' + original_str[pos:]
 
     def parse_math(self, text: str):
-        indexes, paterns_removed = self.find_and_extract_all(text, '^\[Calculator<[0-9a-zA-Z\p{Sm}]*>\]$')
-        for i in range(len(paterns_removed)):
-            patern_removed = paterns_removed[i][12:-2]
+        indexes, patterns_removed = self.find_and_extract_all(text, '^\[Calculator<[0-9a-zA-Z\p{Sm}]*>\]$')
+        for i in range(len(patterns_removed)):
+            pattern_removed = patterns_removed[i][12:-2]
             try:
-                result = self.tool.call_math_api(patern_removed)
+                result = self.tool.call_math_api(pattern_removed)
                 text = self.insert_string(text, result, indexes[i])
             except NameError as e:
                 print(str(e))
