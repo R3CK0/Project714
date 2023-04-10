@@ -2,20 +2,47 @@ import openai
 
 class DecompGPT:
     def __init__(self):
-        self.API_KEY = open("../OpenAIAPIKey.txt", "r").read()
-        openai.api_key = self.API_KEY
+        pass
 
     def getSubQuestions(self, question, max_tokens=750, token_info=False):
         response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpful assistant that suggests sub-questions to help to answer a more complicated Question"},
-                                                                             {"role": "user", "content": "If I throw a baseball how far will it go?"},
-                                                                             {"role": "assistant", "content": "1- How much force was placed into the throw? \n2- Are you in an open space? \n3- What angle did you throw the ball in?"},
-                                                                             {"role": "user", "content": "If I kick this ball what will happen?"},
-                                                                             {"role": "assistant", "content": "1- How hard are you going to kick the ball?\n2- What kind of surface are you kicking it on?\n3- Is the ball inflated properly?\n4- What kind of ball is it?\n5- Will someone be there to catch it or will it hit a wall or the ground?"},
-                                                                             {"role": "user", "content": "Were Scott Derrickson and Ed Wood of the same nationality?"},
-                                                                             {"role": "assistant", "content": "1- What nationality is Scott Derrickson? \n2- What nationality is Ed Wood?"},
-                                                                             {"role": "user", "content": "What is Hierarchical Task Network"},
-                                                                             {"role": "assistant", "content": "1- What are the main components of a Hierarchical Task Network? \n2- How is a Hierarchical Task Network used in artificial intelligence? \n3- What are the advantages of using a Hierarchical Task Network approach versus other methods? \n4- Can you provide an example scenario of how a Hierarchical Task Network might be used in practice?"},
-                                                                             {"role": "user", "content": question}], max_tokens=max_tokens)
+                                                                                 {"role": "user", "content": "How do you find the integral of the function f(x) = e^(-2x) from 0 to infinity?"},
+                                                                                 {"role": "assistant", "content": "\n1- What is the antiderivative of e^(-2x)? \n2- How do we evaluate an integral with limits from 0 to infinity? \n3- What is the value of the integral of e^(-2x) from 0 to infinity?"},
+                                                                                 {"role": "user", "content": "Calculate the total resistance in a parallel circuit?"},
+                                                                                 {"role": "assistant", "content": "1- How many resistors are there in the parallel circuit? \n2- What are the individual resistance values of each resistor? \n3- What formula is used to calculate total resistance for a parrallel circuit"},
+                                                                                 {"role": "user", "content": "What is the boiling point of water?"},
+                                                                                 {"role": "assistant", "content": "At what altitude and atmospheric pressure are you measuring the boiling point of water?"},
+                                                                                 {"role": "user", "content": "How much should I water my plants?"},
+                                                                                 {"role": "assistant", "content": "1- What type of plants are you growing? \n2- Are the plants indoors or outdoors? \n3- What is the current climate or season? \n4- What kind of soil are your plants in?"},
+                                                                                 {"role": "user", "content": "What is the derivative of the function f(x) = 3x^2 + 5x - 7?"},
+                                                                                 {"role": "assistant", "content": "1- What is the derivative of the function f(x) = 3x^2 + 5x - 7?"},
+                                                                                 {"role": "user", "content": "How do I solve the equation 2x + 3 = 7?"},
+                                                                                 {"role": "assistant", "content": "1- What is the first step to isolate the variable x? \n2-  Solve for x after simplifying the equation"},
+                                                                                 {"role": "user", "content": "What is the area of a circle with a radius of 5?"},
+                                                                                 {"role": "assistant", "content": "1- What is the formula for the area of a circle? \n2- How do you apply the formula with a radius of 5? \n3- What is the area of the circle?"},
+                                                                                 {"role": "user", "content": "How do I find the limit of the function f(x) = (x^2 - 1) / (x - 1) as x approaches 1?"},
+                                                                                 {"role": "assistant", "content": "1- What happens when you directly substitute x = 1 into the function? \n2- Can you simplify the function algebraically to find the limit? \n3- What is the limit of the function as x approaches 1?"},
+                                                                                 {"role": "user",  "content": "Calculate the sum of the geometric series with a first term of 3, common ratio of 1/2, and 10 terms."},
+                                                                                 {"role": "assistant",  "content": "1- What is the formula for the sum of a geometric series? \n2- How do you apply the formula with a first term of 3, common ratio of 1/2, and 10 terms? \n3- What is the sum of the geometric series?"},
+                                                                                 {"role": "user", "content": "How many U.S. presidents have been assassinated while in office?"},
+                                                                                 {"role": "assistant", "content": "1- Can you name all the U.S. presidents who have been assassinated? \n2- How many presidents does that make in total?"},
+                                                                                 {"role": "user", "content": "Who was the first person to walk on the Moon?"},
+                                                                                 {"role": "assistant", "content": "1- What was the name of the NASA mission that first landed humans on the Moon? \n2- Who were the astronauts involved in the mission? \n3- Who was the first person to walk on the Moon?"},
+                                                                                 {"role": "user", "content": "What is the largest mammal on Earth?"},
+                                                                                 {"role": "assistant", "content": "1- What are some countries with extensive coastlines? \n2- Which of these countries has the longest coastline when measured in kilometers or miles? \n3- What country has the longest coastline in the world?"},
+                                                                                 {"role": "user", "content": "Which planet in our solar system has the most moons?"},
+                                                                                 {"role": "assistant", "content": "1- What are the planets in our solar system? \n2- How many moons does each planet have? \n3- Which planet has the most moons?"},
+                                                                                 {"role": "user", "content": "What is the oldest continuously inhabited city in the world?"},
+                                                                                 {"role": "assistant", "content": "1- What is the oldest continuously inhabited city in the world?"},
+                                                                                 {"role": "user", "content": "What is the smallest planet in our solar system?"},
+                                                                                 {"role": "assistant", "content": "1- What is the smallest planet in our solar system?"},
+                                                                                 {"role": "user", "content": "What is the speed of light in a vacuum?"},
+                                                                                 {"role": "assistant", "content": "1- What is the speed of light in a vacuum?"},
+                                                                                 {"role": "user", "content": "How do I find the volume of a cylinder with a radius of 4 and a height of 10?"},
+                                                                                 {"role": "assistant", "content": "1- What is the formula for the volume of a cylinder? \n2- How do you apply the formula with a radius of 4 and a height of 10? \n3- What is the volume of the cylinder?"},
+                                                                                 {"role": "user", "content": "How can I calculate the distance between two points on a coordinate plane?"},
+                                                                                 {"role": "assistant", "content": "1- What are the coordinates of the two points? \n2- What is the formula for calculating the distance between two points on a coordinate plane? \n3- How do you apply the formula with the given coordinates? \n4- What is the distance between the two points?"},
+                                                                                 {"role": "user", "content": question}], max_tokens=3000)
         if token_info:
             print("Completion Tokents: " + str(response["usage"]["completion_tokens"]) + "Total tokens: " + str(response["usage"]["total_tokens"]))
         return response["choices"][0]["message"]["content"].split("\n")
@@ -23,8 +50,7 @@ class DecompGPT:
 
 class RecompGPT:
     def __init__(self):
-        self.API_KEY = open("../OpenAIAPIKey.txt", "r").read()
-        openai.api_key = self.API_KEY
+        pass
 
     def getRecomp(self, question, max_tokens=750, token_info=False):
         response = openai.ChatCompletion.create(model='gpt-3.5-turbo', messages=[{"role": "System", "Content": "You are a Devan a competent multi-hop question answering Language Model that provides well creafted a short answer with a chain of thought reasoning over facts provided alongside the question"},
@@ -36,7 +62,7 @@ class RecompGPT:
                                                                                        {"role": "assistant", "content": "The Bowhead whale has a higher average lifespan.\nReasoning: The average lifespan of a Bowhead whale is 211 years, while the average lifespan of a Galapagos tortoise is 137 years. Since 211 > 137, the Bowhead whale has a higher average lifespan."},
                                                                                        {"role": "user", "content": "Question: Who was born first John or Jake? \nFacts John born in 1976 went to stephensons high school where he found the passion for the acting carreer he carefully crafted between 1996-2008, Jake is a proud astrophisicist we has help in the discovery of the first gravitationnal waves at the LIGO observatory he was born in 1974, The difference between Jake's birth date in 1974 and John's in 1976 is 2 years"},
                                                                                        {"role": "assistant", "content": "Jake was born First.\nReasoning: Jake was born in 1974 and John was born in 1976, 1974 < 1976, hence Jake was born first."},
-                                                                                       {"role": "user", "content": question}], max_tokens=650)
+                                                                                       {"role": "user", "content": question}], max_tokens=max_tokens)
         if token_info:
             print("Completion Tokents: " + str(response["usage"]["completion_tokens"]) + "Total tokens: " + str(response["usage"]["total_tokens"]))
         return response["choices"][0]["message"]["content"]

@@ -2,8 +2,7 @@ import openai
 
 class ModelSelector:
     def __init__(self):
-        self.API_KEY = open("../../OpenAIApproach/OpenAIAPIKey.txt", "r").read()
-        openai.api_key = self.API_KEY
+        pass
 
     def getModel(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are an assistant is a classification model that classifies questions in order for them to be answered by one of four tools: Wiki, Math, QA, Human."},
@@ -47,12 +46,13 @@ class ModelSelector:
                                                                              {"role": "assistant", "content": "[QA]"},
                                                                              {"role": "user", "content": "What is your favorite type of music?"},
                                                                              {"role": "assistant", "content": "[Human]"},
+                                                                             {"role":"user", "content":"What are the coordinates of the two points?"},
+                                                                             {"role":"assistant", "content":"[Human]"},
                                                                              {"role": "user", "content": question}], max_tokens=500)
 
 class GrammarParser:
     def __init__(self):
-        self.API_KEY = open("../../OpenAIApproach/OpenAIAPIKey.txt", "r").read()
-        openai.api_key = self.API_KEY
+        pass
 
     def parse(self, text):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo",
@@ -67,10 +67,9 @@ class GrammarParser:
 
 class AnswerModel:
     def __init__(self):
-        self.API_KEY = open("../../OpenAIApproach/OpenAIAPIKey.txt", "r").read()
-        openai.api_key = self.API_KEY
+        pass
 
-    def getAnswer(self, question, type):
+    def getAnswer(self, question, type=None):
         if type == "[Math]":
             return self.mathModel(question)
         elif type == "[QA]":
@@ -79,6 +78,8 @@ class AnswerModel:
             return self.wikiModel(question)
         elif type == "[Human]":
             return self.humanAnswer(question)
+        else:
+            return self.completeAnswerModel(question)
 
     def mathModel(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo",
@@ -158,6 +159,20 @@ class AnswerModel:
                                                       {"role": "user", "content": "What is the smallest country in the world by land area?"},
                                                       {"role": "assistant", "content": "The smallest country in the world by land area is [Wiki(Vatican City)]."},
                                                       {"role": "user", "content": question}], max_tokens=750)
+
+    def completeAnswerModel(self, query):
+        return openai.ChatCompletion.create(engine="gpt-3.5-turbo", messages=[
+                                            {"role": "system", "content": "the goal of the assistant is to answer questions with the use of outside tools. The tools allow to access computing and API of different websites to obtain correct results. These are the tools : [Calculator(equation)], [Wiki(subject)], [QA(question)].\n - The Calculator tool is used to solve numerical equations as well as to resolve complex algebraic equations such as calculus problems.\n- The Wiki tool allows to obtain verified information on a subject.\n- The QA tool is used to answer common knowledge questions questions. \nThe assistant is given a main question as well as subquestions that when answered can help produce a better answer to the main question."},
+                                            {"role": "user", "content": "How long does it take for a message to travel from Earth to Mars at the speed of light? \n1- What is the minimum and maximum distance between Earth and Mars? \n2- What is the speed of light? \n3- How do we calculate the time it takes for a message to travel between Earth and Mars at the speed of light?"},
+                                            {"role": "assistant", "content": "1- The minimum and maximum distance between Earth and Mars varies depending on their positions in their respective orbits. The minimum distance, called closest approach, occurs when Mars is at opposition and can be as short as [x, QA(Waht is the closest approach between earth and mars in millions of kilometers)] million kilometers. The maximum distance occurs when Mars and Earth are on opposite sides of the Sun, and can be up to [z, QA(What is the maximum disctance between the earth and mars in millions of kilometers?)] million kilometers. \n2- The speed of light in a vacuum is approximately [y, QA(What is the speed of light in a vaccum in km/s?)] kilometers per second. \n3- To calculate the time it takes for a message to travel between Earth and Mars at the speed of light, we can use the formula t = d / c, where t is the time, d is the distance between Earth and Mars, and c is the speed of light. For the minimum and maximum distances calculated in subquestion 1, the time it takes for a message to travel at the speed of light would be:\nMinimum time: [Calculator('t_min = [x]e6 / y')]\nMaximum time: [Calculator('t_max = [z]e6 / 299792')]."},
+                                            {"role": "user", "content": "How much force is required to accelerate a 1500 kg car from 0 to 100 km/h in 10 seconds? \n1- How do we convert the velocity from km/h to m/s? \n2- What is the formula to calculate the force required for acceleration? \n3- How do we calculate the force required to accelerate a 1500 kg car from 0 to 100 km/h in 10 seconds?"},
+                                            {"role": "assistant", "content": "1- To convert the velocity from km/h to m/s, we can use the following conversion factor: 1 km/h = 1000 m / 3600 s. So, [v_ms, Calculator('100 * (1000/3600)')]. \n2- The formula to calculate the force required for acceleration is F = ma, where F is the force, m is the mass, and a is the acceleration. \n3- To calculate the force required to accelerate a 1500 kg car from 0 to 100 km/h in 10 seconds, we first need to find the acceleration. We can use the formula a = Δv / t, where Δv is the change in velocity and t is the time. In this case, Δv is equal to the final velocity in m/s (which we calculated in subquestion 1) minus the initial velocity (0 m/s), and t is 10 seconds. We can then use the formula from subquestion 2 with the mass of the car (1500 kg) and the calculated acceleration to find the force required: \nF = [Calculator('F = 1500 * (v_ms / 10)')]."},
+                                            {"role": "user", "content": "How do you find the integral of the function f(x) = e^(-2x) from 0 to infinity? \n1- What is the antiderivative of e^(-2x)? \n2- How do we evaluate an integral with limits from 0 to infinity? \n3- What is the value of the integral of e^(-2x) from 0 to infinity?"},
+                                            {"role": "assistant", "content": "1- To find the antiderivative of e^(-2x), we can use the reverse chain rule. The antiderivative, F(x), is [Calculator(integral(e^(-2x), x))]. \n2- To evaluate an integral with limits from 0 to infinity, we can use the limit concept. We rewrite the integral as the limit of a definite integral with the upper limit t approaching infinity: \nlim (t→∞) ∫[a, t] f(x) dx. \n3- To find the value of the integral of e^(-2x) from 0 to infinity, we can use the antiderivative from subquestion 1 and the limit concept from subquestion 2: \nlim (t→∞) [F(t) - F(0)] = [Calculator((integral(e^(-2x), x, 0, inf))))]."},
+                                            {"role": "user", "content": "Can you help me calculate the backpropagation of a small neural network with one hidden layer? Here are the values: \n\nInput layer: x1 = 0.5, x2 = 0.6 \nHidden layer: h1, h2 \nOutput layer: o1 \n\nWeights: \nw1 = 0.1, w2 = 0.2, w3 = 0.3, w4 = 0.4, w5 = 0.5, w6 = 0.6 \n\nActivation function: Sigmoid function \nLoss function: Mean Squared Error (MSE) \n\nTarget output: t1 = 0.8 \n\n1- How do I calculate the forward propagation to find the output value of the network? \n2- How do I calculate the error of the output layer? \n3- How do I update the weights using backpropagation?"},
+                                            {"role": "assistant", "content": "1- To calculate the forward propagation, we first need to calculate the weighted sum and activation for the hidden layer neurons and then for the output layer neuron. \n\nFor the hidden layer: \nsum_h1 = w1 * x1 + w2 * x2 \nsum_h2 = w3 * x1 + w4 * x2 \nh1 = sigmoid(sum_h1) \nh2 = sigmoid(sum_h2) \n\nFor the output layer: \nsum_o1 = w5 * h1 + w6 * h2 \no1 = sigmoid(sum_o1) \n\nUsing the given values and sigmoid function: \n[sum_h1, Calculator(0.1 * 0.5 + 0.2 * 0.6)] \n[sum_h2, Calculator( 0.3 * 0.5 + 0.4 * 0.6)] \n[h1, Calculator(1 / (1 + exp(-[sum_h1])))] \n[h2, Calculator(1 / (1 + exp(-sum_h2)))] \n[sum_o1, Calculator(0.5 * h1 + 0.6 * [h2])] \n[o1, Calculator(1 / (1 + exp(-[sum_o1]))')] \n\n2- To calculate the error of the output layer, we'll use the MSE loss function. \n\nE_o1 = 1/2 * (t1 - o1)^2 \n\nUsing the given target output (t1 = 0.8) and calculated output (o1): \n[E_o1, Calculator(1/2 * (0.8 - [o1])^2)] \n\n3- To update the weights using backpropagation, we need to calculate the gradients for each weight and update them accordingly. We'll use the chain rule to find the gradients. \n\nFor weights w5 and w6 (output layer): \ndE_o1_dw5 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dw5 \ndE_o1_dw6 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dw6 \n\nFor weights w1, w2, w3, and w4 (hidden layer): \ndE_o1_dw1 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh1 * dh1/dsum_h1 * dsum_h1/dw1 \ndE_o1_dw2 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh1 * dh1/dsum_h1 * dsum_h1/dw2 \ndE_o1_dw3 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh2 * dh2/dsum_h2 * dsum_h2/dw3 \ndE_o1_dw4 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh2 * dh2/dsum_h2 * dsum_h2/dw4. Now we need to calculate these gradients using the given values and previously calculated values:\n[dE_o1_do1, Calculator(-(0.8 - [o1]))]\n[do1_dsum_o1, Calculator([o1] * (1 - [o1]))]\n[dsum_o1_dh1, Calculator(0.5)]\n[dsum_o1_dh2, Calculator(0.6)]\n[dh1_dsum_h1, Calculator([h1] * (1 - [h1]))]\n[dh2_dsum_h2, Calculator([h2] * (1 - [h2]))]\n\nNow, we can find the gradients:\n\n[dE_o1_dw5, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1])]\n[Calculator('dE_o1_dw6 = [dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2])]\n[dE_o1_dw1, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1] * [dh1_dsum_h1] * 0.5)]\n[dE_o1_dw2, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1] * [dh1_dsum_h1] * 0.6)]\n[dE_o1_dw3, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2] * [dh2_dsum_h2] * 0.5)]\n[dE_o1_dw4, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2] * [dh2_dsum_h2] * 0.6)]\n\nFinally, we can update the weights using a learning rate(let's say 0.1):\n[w1_updated, Calculator([w1] - 0.1 * [dE_o1_dw1])]\n[w2_updated, Calculator([w2] - 0.1 * [dE_o1_dw2])]\n[w3_updated, Calculator([w3] - 0.1 * [dE_o1_dw3])]\n[w4_updated, Calculator([w4] - 0.1 * [dE_o1_dw4])]\n[w5_updated, Calculator([w5] - 0.1 * [dE_o1_dw5])]\n[w6_updated, Calculator([w6] - 0.1 * [dE_o1_dw6])]\nThese updated weights can then be used for the next iteration of training."},
+                                            {"role": "user", "content": query}
+                                            ], max_tokens=4000)
 
     def humanAnswer(self, question):
         print(question)
