@@ -13,6 +13,10 @@ class Manipulator():
     class ModelType(enum.Enum):
         math = 'math'
         wiki = 'wiki'
+        
+    def format_and_insert_var(self, var, result):
+        var = var.replace(",", "").replace("[", "").replace("]", "").replace(" ", "").replace("(", "").replace(")", "")
+        self.tool.variables[var] = str(result)
 
     def replace_keys_with_values(self, s:str):
         for k, v in self.tool.variables.items():
@@ -63,8 +67,7 @@ class Manipulator():
                 
                 text = self.insert_string(text, result, indexes[i])
                 if len(split_pattern) > 1:
-                    var = split_pattern[0].replace(",", "").replace("[", "").replace("]", "").replace(" ", "").replace("(", "").replace(")", "")
-                    self.tool.variables[var] = str(result)
+                    self.format_and_insert_var(split_pattern[0], result)
             except NameError as e:
                 print(str(e))
         return text
@@ -84,13 +87,18 @@ class Manipulator():
 
     def parse_qa(self, text: str):
         # find patten remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(text, '\[QA(.*?)\]')
+        indexes, paterns_removed = self.find_and_extract_all(text, '\[[a-zA-Z0-9_-,()]*QA(.*?)\]')
         for i in range(len(paterns_removed)):
-            patern_removed = patern_removed[5:-2]
+            split_pattern = paterns_removed[i].split('QA(')
+            patern_removed = split_pattern[-1][:-2]
+            #patern_removed = patern_removed[5:-2]
             try:
                 # call qa api
                 result = self.tool.call_qa_API(patern_removed)
                 text = self.insert_string(text, result, indexes[i])
+                if len(split_pattern) > 1:
+                    if len(split_pattern) > 1:
+                        self.format_and_insert_var(split_pattern[0], result)
             except NameError as e:
                 print(str(e))
         return text
