@@ -94,6 +94,6 @@ class Manipulator():
        return [grammarModel.parse(answer) for answer in answers]
 
     def recomposition_format(self, question, sub_answers):
-        sub_answers_concaneted = " ".join(sub_answers)
+        sub_answers_concaneted = "\n".join(sub_answers)
         return 'Question: ' + question + '\nFacts: ' + sub_answers_concaneted
         
