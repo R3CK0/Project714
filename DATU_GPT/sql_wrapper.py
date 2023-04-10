@@ -2,7 +2,7 @@ import mysql.connector
 import json
 from tqdm import tqdm
 import time
-from GPT_tools import AnswerModel
+from DATU import DATU
 
 class Database:
     
@@ -14,6 +14,7 @@ class Database:
             database='Answers'
         )
         self.mycursor = self.db.cursor()
+        model = DATU()
         
     def create_table(self):
         self.mycursor.execute("CREATE TABLE questions_answer_model(id INT NOT NULL,question VARCHAR(300) NOT NULL,our_model_answer VARCHAR(300) NOT NULL, our_model_reasoning VARCHAR(300) NOT NULL, gpt_answer VARCHAR(300) NOT NULL, PRIMARY KEY(id));")
@@ -33,16 +34,12 @@ class Database:
         count = 0
         time_start = time.time()
 
-        # TODO change the models
-        model = WholeModel()
-        gpt_model = AnswerModel()
-
         for sample in tqdm(data):
             count += 1
             try:
                 question = sample['question']
-                answer, reasoning = model.getAnswer(question)
-                gpt_answer = gpt_model.getAnswer(question)
+                answer, reasoning = self.model.method_1_answer(question)
+                gpt_answer = self.model.base_model_answer(question)
                 string = f"INSERT INTO questions_answer_model (id, question, our_model_answer, our_model_reasoning, gpt_answer) VALUES ({question_id}, '{question}', '{answer}', '{reasoning}', '{gpt_answer}');"
                 self.mycursor.execute(string)
                 self.db.commit()

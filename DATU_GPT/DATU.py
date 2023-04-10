@@ -38,6 +38,9 @@ class DATU:
 
         # recompile the sub_answers and main question into an answer and justification
         answer = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
+        
+        # clear variables
+        self.tools.clear_toolKit()
 
         return answer
 
@@ -67,6 +70,9 @@ class DATU:
             answer = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
         except:
             print("Error in method 2")
+            
+        # clear variables
+        self.tools.clear_toolKit()
         return answer
 
     def method_3_answer(self, question):
@@ -84,6 +90,10 @@ class DATU:
 
         # recompile the sub_answers and main question into an answer and justification
         answer = self.recomp_model.getRecomp("Question: " + question + "\nFacts: " + sub_answers)
+        
+        # clear variables
+        self.tools.clear_toolKit()
+        
         return answer
 
     def base_model_answer(self, question):

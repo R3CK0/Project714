@@ -5,6 +5,7 @@ from serpapi import GoogleSearch
 
 class ToolKit():
     def __init__(self):
+        self.variables = {}
         pass
     
     def url_encode(self, string):
@@ -60,5 +61,11 @@ class ToolKit():
         #result = str(eval(query))
         return result
     
-
+    def clear_toolKit(self):
+        self.variables.clear()
     
+tool = ToolKit()
+print(tool.call_math_api('d(7x)/dx'))
+#integral(x^2)  
+
+# x, Calculator()

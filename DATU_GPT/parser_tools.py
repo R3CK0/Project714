@@ -14,6 +14,10 @@ class Manipulator():
         math = 'math'
         wiki = 'wiki'
 
+    def replace_keys_with_values(self, s:str):
+        for k, v in self.tool.variables.items():
+            s = s.replace(f"#{k}#", v)
+        return s
 
     def remove_pattern(self, text: str, pattern: str) -> tuple:
         # Compile the regex pattern
@@ -48,19 +52,26 @@ class Manipulator():
         return original_str[:pos] + '[' + insert_str + ']' + original_str[pos:]
 
     def parse_math(self, text: str):
-        indexes, patterns_removed = self.find_and_extract_all(text, '^\[Calculator<[0-9a-zA-Z\p{Sm}]*>\]$')
+        indexes, patterns_removed = self.find_and_extract_all(text, '^\[[a-zA-Z0-9_-,()]*Calculator([0-9a-zA-Z#\p{Sm}]*)\]$')
         for i in range(len(patterns_removed)):
-            pattern_removed = patterns_removed[i][12:-2]
+            split_pattern = patterns_removed[i].split('Calculator(')
+            expression = split_pattern[-1][:-2]
+            # replace variables
+            expression = self.replace_keys_with_values(expression)
             try:
-                result = self.tool.call_math_api(pattern_removed)
+                result = self.tool.call_math_api(expression)
+                
                 text = self.insert_string(text, result, indexes[i])
+                if len(split_pattern) > 1:
+                    var = split_pattern[0].replace(",", "").replace("[", "").replace("]", "").replace(" ", "").replace("(", "").replace(")", "")
+                    self.tool.variables[var] = str(result)
             except NameError as e:
                 print(str(e))
         return text
 
     def parse_wiki(self, text: str):
         # find pattern remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(text, '\[Wiki<.*?>\]')
+        indexes, paterns_removed = self.find_and_extract_all(text, '\[Wiki(.*?)\]')
         for i in range(len(paterns_removed)):
             patern_removed = patern_removed[7:-2]
             try:
@@ -73,7 +84,7 @@ class Manipulator():
 
     def parse_qa(self, text: str):
         # find patten remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(text, '\[QA<.*?>\]')
+        indexes, paterns_removed = self.find_and_extract_all(text, '\[QA(.*?)\]')
         for i in range(len(paterns_removed)):
             patern_removed = patern_removed[5:-2]
             try:
