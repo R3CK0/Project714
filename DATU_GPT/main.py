@@ -12,8 +12,8 @@ def main():
         #print(answer1)
 
         # model 2
-        #answer2 = model.method_2_answer(question)
-        #print(answer2)
+        answer2 = model.method_2_answer(question)
+        print(answer2)
 
         # model 3
         answer3 = model.method_3_answer(question)
