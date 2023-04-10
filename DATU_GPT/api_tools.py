@@ -60,8 +60,31 @@ class ToolKit():
             result = "Error: Invalid expression"
         return result
     
+    
+    def solve_math_api(self, query:str):
+
+        query = urllib.parse.quote_plus(query)
+        query_url = f"http://api.wolframalpha.com/v2/query?" \
+                    f"appid=74UV94-Q95PR46UGT" \
+                    f"&input={query}" \
+                    f"&includepodid=Result" \
+                    f"&output=json"
+
+        r = requests.get(query_url).json()
+
+        data = r["queryresult"]["pods"][0]["subpods"][0]
+        results = data["plaintext"]
+        variables = results.split(" and ")
+        for var in variables:
+            pair = var.split(" = ")
+            key = pair[0]
+            val = pair[1]
+            self.variables[key] = val
+        return results
+            
     def clear_toolKit(self):
         self.variables.clear()
+        
     
 # tool = ToolKit()
 # print(tool.call_math_api('d(7x)/dx'))

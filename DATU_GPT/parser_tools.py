@@ -63,10 +63,14 @@ class Manipulator():
             # replace variables
             expression = self.replace_keys_with_values(expression)
             try:
-                result = self.tool.call_math_api(expression)
+                if expression.startswith('solve'):
+                    result = self.tool.solve_math_api(expression)
+                else:
+                    result = self.tool.call_math_api(expression)
                 
                 text = self.insert_string(text, result, indexes[i])
                 if len(split_pattern) > 1:
+                    # adding variables to dictionary
                     self.format_and_insert_var(split_pattern[0], result)
             except NameError as e:
                 print(str(e))
