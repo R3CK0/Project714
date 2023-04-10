@@ -83,7 +83,7 @@ class DATU:
         print(sub_answers)
 
         # Reformat the sub_answers to the correct format
-        sub_answers = self.manipulator.reformat_sub_answers(sub_answers, self.grammarParserModel)
+        sub_answers = self.grammarParserModel.parse(sub_answers)
         print(sub_answers)
 
         # recompile the sub_answers and main question into an answer and justification

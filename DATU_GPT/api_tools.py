@@ -34,6 +34,8 @@ class ToolKit():
     
 
     def call_math_api(self, query: str):
+        print("\n=================Calling math API=================")
+        print(query)
         params = {"appid": '74UV94-Q95PR46UGT', "i": query}
         result = self.make_request("http://api.wolframalpha.com/v2/result", params)
         if result is None:
