@@ -2,7 +2,6 @@ import wikipediaapi
 import urllib.parse
 import requests
 from serpapi import GoogleSearch
-import sympy as sp
 
 class ToolKit():
     def __init__(self):
@@ -52,48 +51,40 @@ class ToolKit():
 
     
 
-    # def call_math_api(self, query: str):
-    #     print("\n=================Calling math API=================")
-    #     print(query)
-    #     params = {"appid": '74UV94-Q95PR46UGT', "i": query, "format": "MathematicaInput"}
-    #     result = self.make_request("http://api.wolframalpha.com/v2/result", params)
-    #     if result is None:
-    #         result = "Error: Invalid expression"
-    #     return result
-
     def call_math_api(self, query: str):
         print("\n=================Calling math API=================")
         print(query)
-        params = {"appid": '74UV94-Q95PR46UGT', "i": query, "format": "Mathematica"}
+        params = {"appid": '74UV94-Q95PR46UGT', "i": query}
         result = self.make_request("http://api.wolframalpha.com/v2/result", params)
         if result is None:
             result = "Error: Invalid expression"
-        # else:
-        #     result = result.strip()
-        #     # parse the result using SymPy to get it in the desired format
-        #     expr = sp.S(str(result))
-        #     formatted_result = sp.pretty(expr)
-        #     result = formatted_result.replace("==", "=")
         return result
+
+
+    def solve_math_api(self, query:str):
+
+        query = urllib.parse.quote_plus(query)
+        query_url = f"http://api.wolframalpha.com/v2/query?" \
+                    f"appid=74UV94-Q95PR46UGT" \
+                    f"&input={query}" \
+                    f"&includepodid=Result" \
+                    f"&output=json"
+
+        r = requests.get(query_url).json()
+
+        data = r["queryresult"]["pods"][0]["subpods"][0]
+        results = data["plaintext"]
+        variables = results.split(" and ")
+        for var in variables:
+            pair = var.split(" = ")
+            key = pair[0]
+            val = pair[1]
+            self.variables[key] = val
+        return results
 
     def clear_toolKit(self):
         self.variables.clear()
-    
-#tool = ToolKit()
-#print(tool.call_math_api('solve x^2 = 4'))
 
-equation = "solve 8x+2y+3z=12, 3x+4y+5z=13, 5x+6y+7z=14"
-query = urllib.parse.quote_plus(equation)
-query_url = f"http://api.wolframalpha.com/v2/query?" \
-            f"appid={'74UV94-Q95PR46UGT'}" \
-            f"&input={query}" \
-            f"&includepodid=Result" \
-            f"&output=json"
 
-r = requests.get(query_url).json()
-
-data = r["queryresult"]["pods"][0]["subpods"][0]
-plaintext = data["plaintext"]
-
-print(plaintext)
-# Result of 7 + 2x = 12 - 3x is 'x = 1'.
+# tool = ToolKit()
+# print(tool.call_math_api('d(7x)/dx'))
