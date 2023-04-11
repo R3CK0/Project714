@@ -99,3 +99,7 @@ class DATU:
     def base_model_answer(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpfull question answering assistant"},
                                                                              {"role": "user", "content": question}], max_tokens=500)["choices"][0]["message"]["content"]
+
+    def math_model(self, equation):
+        answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(equation, "[math]"))
+        return self.manipulator.extract_API_call(answer)
