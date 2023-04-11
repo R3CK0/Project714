@@ -78,15 +78,18 @@ class DATU:
     def method_3_answer(self, question):
         # get list of decomposed question
         response = "\n".join(self.decomp_model.getSubQuestions(question))
+        print(response)
 
         # Obtain the API requests to complete the sub answers
         sub_answers = self.manipulator.get_content(self.divineBeastModel.getAnswer(question + "\n" + response))
+        print(sub_answers)
 
         # extract the API call from the sub question and apply tools to obtain sub_answers
         sub_answers = self.manipulator.extract_API_call(sub_answers)
+        print(sub_answers)
 
         # Reformat the sub_answers to the correct format
-        sub_answers = self.manipulator.get_content(self.grammarParserModel.parse(sub_answers))
+        #sub_answers = self.manipulator.get_content(self.grammarParserModel.parse(sub_answers))
 
         # recompile the sub_answers and main question into an answer and justification
         answer = self.recomp_model.getRecomp("Question: " + question + "\nFacts: " + sub_answers)

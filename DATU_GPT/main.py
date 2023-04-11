@@ -8,15 +8,19 @@ def main():
         model = DATU(API_KEY)
 
         # model 1
-        #answer1 = model.method_1_answer(question)
-        #print(answer1)
+        answer0 = model.method_decomp_answer(question)
+        print(answer0)
 
-        # model 2
-        answer2 = model.method_2_answer(question)
+        # data_qa_tool
+        answer1 = model.method_data_qa_tool_answer(question)
+        print(answer1)
+
+        # model math tool
+        answer2 = model.method_math_tool_answer(question)
         print(answer2)
 
         # model 3
-        answer3 = model.method_3_answer(question)
+        answer3 = model.method_complex_tool_answer(question)
         print(answer3)
 
         # base model
