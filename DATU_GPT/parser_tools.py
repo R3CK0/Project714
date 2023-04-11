@@ -119,4 +119,11 @@ class Manipulator():
     def recomposition_format(self, question, sub_answers):
         sub_answers_concaneted = "\n".join(sub_answers)
         return 'Question: ' + question + '\nFacts: ' + sub_answers_concaneted
+
+
+# manipulator = Manipulator()
+# text = "1- The formula for calculating power is P = W/t, where P is the power, W is the work done, and t is the time taken to do the work. \n 2- The work done to lift the water to a 30-meter height is given by the formula W = F*h, where F is the force required to lift the water, and h is the height through which the water is lifted. The force required to lift the water can be determined using the formula F = m*g, where m is the mass of water being lifted, and g is the acceleration due to gravity (approximately 9.81 m/s^2). We can determine the mass of the water using the density of water, which is approximately 1000 kg/m^3. The mass of water being lifted is thus 200 kg/min * (1000/60) kg/L = 3333.33 kg. Using these values, we have: [work_done, Calculator(3333.33 * 9.81 * 30)] J. \n3- To determine the power required to pump water at a rate of 200 L/min to a height of 30 meters, we need to divide the work done by the time taken. We can calculate the time taken to lift the water to a 30-meter height using the rate of water flow: t = V/Q, where V is the volume of water lifted to the given height and Q is the flow rate of water which is 200 L/min. The volume of water lifted is given by V = A*h, where A is the cross-sectional area of the pipe used to pump water, and h is the height through which the water is lifted. Assuming a circular pipe of diameter 10 cm, we have: A = pi*(0.1/2)^2 = 0.00785 m^2. So, V = A*h = 0.00785 m^2 * 30 m = 0.2355 m^3. Using these values, we have:\nt = [time_taken, Calculator(0.2355/(200/60))] sec\nP = [power_required, Calculator([work_done] / #time_taken#)] W"
+# answer = manipulator.extract_API_call(text)
+#
+# print(answer)
         

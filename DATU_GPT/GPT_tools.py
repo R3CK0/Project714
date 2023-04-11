@@ -85,6 +85,8 @@ class AnswerModel:
                 return self.qaModel(question)
             elif type == "[Wiki]":
                 return self.wikiModel(question)
+            elif type == "[Base]":
+                return self.base_model_answer(question)
             elif type == "[Human]":
                 return self.humanAnswer(question)
             else:
@@ -107,66 +109,6 @@ class AnswerModel:
                                                        "content": "A car travels 120 miles in 3 hours. What is the average speed of the car in miles per hour?"},
                                                       {"role": "assistant",
                                                        "content": "A car travels 120 miles in 3 hours. The average speed of the car is [Calculator(120 / 3)] miles per hour."},
-
-                                                      {"role": "user",
-                                                       "content": "If a shirt costs $25 and there is a 15% discount, what is the final price of the shirt?"},
-                                                      {"role": "assistant",
-                                                       "content": "If a shirt costs $25 and there is a 15% discount, the discount amount is $[Calculator(25 * 0.15)]. The final price of the shirt is $[Calculator(25 - 3.75)]."},
-
-                                                      {"role": "user",
-                                                       "content": "A rectangle has a length of 12 cm and a width of 8 cm. What is the area and the perimeter of the rectangle?"},
-                                                      {"role": "assistant",
-                                                       "content": "A rectangle has a length of 12 cm and a width of 8 cm. The area of the rectangle is [Calculator(12 * 8)] square cm. The perimeter of the rectangle is [Calculator(2 * (12 + 8))] cm."},
-
-                                                      {"role": "user",
-                                                       "content": "If a cyclist covers a distance of 36 km in 2 hours, what is their average speed in kilometers per hour?"},
-                                                      {"role": "assistant",
-                                                       "content": "If a cyclist covers a distance of 36 km in 2 hours, their average speed is [Calculator(36 / 2)] kilometers per hour."},
-
-                                                      {"role": "user",
-                                                       "content": "A triangle has a base of 14 cm and a height of 6 cm. What is the area of the triangle?"},
-                                                      {"role": "assistant",
-                                                       "content": "A triangle has a base of 14 cm and a height of 6 cm. The area of the triangle is [Calculator(0.5 * 14 * 6)] square cm."},
-
-                                                      {"role": "user",
-                                                       "content": "A circle has a radius of 5 cm. Calculate the circumference and the area of the circle."},
-                                                      {"role": "assistant",
-                                                       "content": "A circle has a radius of 5 cm. The circumference of the circle is [Calculator(2 * 3.14159 * 5)] cm (approximately). The area of the circle is [Calculator(3.14159 * 5^2)] square cm (approximately)."},
-
-                                                      {"role": "user",
-                                                       "content": "A sphere has a volume of 288 cubic cm. Calculate the radius of the sphere."},
-                                                      {"role": "assistant",
-                                                       "content": "A sphere has a volume of 288 cubic cm. To find the radius, we use the formula for the volume of a sphere: V = (4/3) * π * r^3. Rearranging the formula and solving for r, we get: r = [Calculator(((3 * 288) / (4 * 3.14159))^(1/3))] cm (approximately)."},
-
-                                                      {"role": "user",
-                                                       "content": "A rectangular prism has a length of 10 cm, a width of 6 cm, and a height of 4 cm. Calculate the volume and surface area of the prism."},
-                                                      {"role": "assistant",
-                                                       "content": "A rectangular prism has a length of 10 cm, a width of 6 cm, and a height of 4 cm. The volume of the prism is [Calculator(10 * 6 * 4)] cubic cm. The surface area of the prism is [Calculator(2 * (10 * 6 + 10 * 4 + 6 * 4))] square cm."},
-
-                                                      {"role": "user",
-                                                       "content": "A right triangle has legs of 6 cm and 8 cm. What is the length of the hypotenuse?"},
-                                                      {"role": "assistant",
-                                                       "content": "A right triangle has legs of 6 cm and 8 cm. To find the length of the hypotenuse, we use the Pythagorean theorem: a^2 + b^2 = c^2, where a and b are the legs and c is the hypotenuse. So, the length of the hypotenuse is [Calculator(sqrt(6^2 + 8^2))] cm."},
-
-                                                      {"role": "user",
-                                                       "content": "A parallelogram has a base of 7 cm and a height of 5 cm. Calculate the area of the parallelogram."},
-                                                      {"role": "assistant",
-                                                       "content": "A parallelogram has a base of 7 cm and a height of 5 cm. The area of the parallelogram is [Calculator(7 * 5)] square cm."},
-
-                                                      {"role": "user",
-                                                       "content": "A trapezoid has bases of 8 cm and 12 cm and a height of 4 cm. Calculate the area of the trapezoid."},
-                                                      {"role": "assistant",
-                                                       "content": "A trapezoid has bases of 8 cm and 12 cm and a height of 4 cm. The area of the trapezoid is [Calculator(0.5 * (8 + 12) * 4)] square cm."},
-
-                                                      {"role": "user",
-                                                       "content": "A car consumes 5 liters of gasoline to cover 100 km. How many liters of gasoline will it consume to cover 350 km?"},
-                                                      {"role": "assistant",
-                                                       "content": "A car consumes 5 liters of gasoline to cover 100 km. To find out how many liters it will consume to cover 350 km, we can set up a proportion: 5 liters/100 km = x liters/350 km. Solving for x, we get x = [Calculator((5 * 350) / 100)] liters of gasoline."},
-
-                                                      {"role": "user",
-                                                       "content": "If a train travels at a speed of 80 km/h, how many kilometers will it cover in 45 minutes?"},
-                                                      {"role": "assistant",
-                                                       "content": "If a train travels at a speed of 80 km/h, we need to find out how many kilometers it will cover in 45 minutes. First, let's convert 45 minutes to hours: 45 minutes = [Calculator(45 / 60)] hours. Now, we can calculate the distance: distance = speed * time. So, the train will cover [Calculator(80 * 0.75)] kilometers in 45 minutes."},
 
                                                       {"role": "user",
                                                        "content": "The price of a product increased from $20 to $25. What is the percentage increase in the price?"},
@@ -396,11 +338,7 @@ class AnswerModel:
     def completeAnswerModel(self, query):
         answer = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[
             {"role": "system",
-             "content": "the goal of the assistant is to answer questions with the use of outside tools. The tools allow to access computing and API of different websites to obtain correct results. These are the tools : [Calculator(equation)], [Wiki(subject)], [QA(question)].\n - The Calculator tool is used to solve numerical equations as well as to resolve complex algebraic equations such as calculus problems.\n- The Wiki tool allows to obtain verified information on a subject.\n- The QA tool is used to answer common knowledge questions questions. \nThe assistant is given a main question as well as subquestions that when answered can help produce a better answer to the main question."},
-            {"role": "user",
-             "content": "A mass attached to a spring with a spring constant k, and the mass is sliding on a horizontal frictionless surface. Find the equation of motion using Lagrangian mechanics. \n1- What is the Lagrangian for this system? \n2- What is the Euler-Lagrange equation for this system? \n3- How do I solve for the equation of motion?"},
-            {"role": "assistant",
-             "content": " \n- x(t) represents the position of the mass with respect to time t. \n- m is the mass of the object. \n- k is the spring constant. \n\n1- The Lagrangian for this system is defined as the difference between the kinetic energy T and the potential energy V of the system: \nL = T - V. \n\nFor a mass on a horizontal frictionless surface, the kinetic energy is given by: \nT = 1/2 * m * (dx/dt)^2. \n\nThe potential energy stored in the spring is given by: \nV = 1/2 * k * x^2. \n\nTherefore, the Lagrangian is: \nL = [Lagrangian, Calculator(1/2 * m * (dx/dt)^2 - 1/2 * k * x^2)]. \n\n2- To find the equation of motion, we need to use the Euler-Lagrange equation: \nd/dt(dL/d(dx/dt)) - dL/dx = 0. \n\n3- Now we can find the equation of motion by solving the Euler-Lagrange equation with the given Lagrangian: \n\nd/dt(dL/d(dx/dt)) = d/dt(m * dx/dt) = m * d^2x/dt^2. \n\ndL/dx = -k * x. \n\nSubstitute these expressions into the Euler-Lagrange equation: \nm * d^2x/dt^2 + k * x = 0. \n\nThis is the equation of motion for the mass attached to a spring sliding on a horizontal frictionless surface."},
+             "content": "You are a helpfull assistant nemed jessica who answer questions with the use of outside tools. The tools allow to access computing and API of different websites to obtain correct results. These are the tools : [Calculator(equation)], [Wiki(subject)], [QA(question)].\n - The Calculator tool is used to solve numerical equations as well as to resolve complex algebraic equations such as calculus problems.\n- The Wiki tool allows to obtain verified information on a subject.\n- The QA tool is used to answer common knowledge questions questions. \nThe assistant is given a main question as well as subquestions that when answered can help produce a better answer to the main question."},
             {"role": "user",
              "content": "A jet wing is experiencing air turbulence due to Mach speed airflow. The jet is flying at an altitude where the speed of sound is 340 m/s, and the air density is 0.4 kg/m³. The jet has a wing surface area of 30 m² and is flying at Mach 1.5. Estimate the lift force on the wing due to the air turbulence.\n1- What is the velocity of the jet in m/s? \n2- What is the dynamic pressure acting on the wing? \n3- What is the lift coefficient for a typical jet wing at Mach 1.5? \n4- How do we calculate the lift force on the jet wing?"},
             {"role": "assistant",
@@ -421,9 +359,13 @@ class AnswerModel:
              "content": "Can you help me calculate the backpropagation of a small neural network with one hidden layer? Here are the values: \n\nInput layer: x1 = 0.5, x2 = 0.6 \nHidden layer: h1, h2 \nOutput layer: o1 \n\nWeights: \nw1 = 0.1, w2 = 0.2, w3 = 0.3, w4 = 0.4, w5 = 0.5, w6 = 0.6 \n\nActivation function: Sigmoid function \nLoss function: Mean Squared Error (MSE) \n\nTarget output: t1 = 0.8 \n\n1- How do I calculate the forward propagation to find the output value of the network? \n2- How do I calculate the error of the output layer? \n3- How do I update the weights using backpropagation?"},
             {"role": "assistant",
              "content": "1- To calculate the forward propagation, we first need to calculate the weighted sum and activation for the hidden layer neurons and then for the output layer neuron. \n\nFor the hidden layer: \nsum_h1 = w1 * x1 + w2 * x2 \nsum_h2 = w3 * x1 + w4 * x2 \nh1 = sigmoid(sum_h1) \nh2 = sigmoid(sum_h2) \n\nFor the output layer: \nsum_o1 = w5 * h1 + w6 * h2 \no1 = sigmoid(sum_o1) \n\nUsing the given values and sigmoid function: \n[sum_h1, Calculator(0.1 * 0.5 + 0.2 * 0.6)] \n[sum_h2, Calculator( 0.3 * 0.5 + 0.4 * 0.6)] \n[h1, Calculator(1 / (1 + exp(-[sum_h1])))] \n[h2, Calculator(1 / (1 + exp(-sum_h2)))] \n[sum_o1, Calculator(0.5 * h1 + 0.6 * [h2])] \n[o1, Calculator(1 / (1 + exp(-[sum_o1]))')] \n\n2- To calculate the error of the output layer, we'll use the MSE loss function. \n\nE_o1 = 1/2 * (t1 - o1)^2 \n\nUsing the given target output (t1 = 0.8) and calculated output (o1): \n[E_o1, Calculator(1/2 * (0.8 - [o1])^2)] \n\n3- To update the weights using backpropagation, we need to calculate the gradients for each weight and update them accordingly. We'll use the chain rule to find the gradients. \n\nFor weights w5 and w6 (output layer): \ndE_o1_dw5 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dw5 \ndE_o1_dw6 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dw6 \n\nFor weights w1, w2, w3, and w4 (hidden layer): \ndE_o1_dw1 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh1 * dh1/dsum_h1 * dsum_h1/dw1 \ndE_o1_dw2 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh1 * dh1/dsum_h1 * dsum_h1/dw2 \ndE_o1_dw3 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh2 * dh2/dsum_h2 * dsum_h2/dw3 \ndE_o1_dw4 = dE_o1/do1 * do1/dsum_o1 * dsum_o1/dh2 * dh2/dsum_h2 * dsum_h2/dw4. Now we need to calculate these gradients using the given values and previously calculated values:\n[dE_o1_do1, Calculator(-(0.8 - [o1]))]\n[do1_dsum_o1, Calculator([o1] * (1 - [o1]))]\n[dsum_o1_dh1, Calculator(0.5)]\n[dsum_o1_dh2, Calculator(0.6)]\n[dh1_dsum_h1, Calculator([h1] * (1 - [h1]))]\n[dh2_dsum_h2, Calculator([h2] * (1 - [h2]))]\n\nNow, we can find the gradients:\n\n[dE_o1_dw5, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1])]\n[Calculator('dE_o1_dw6 = [dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2])]\n[dE_o1_dw1, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1] * [dh1_dsum_h1] * 0.5)]\n[dE_o1_dw2, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh1] * [dh1_dsum_h1] * 0.6)]\n[dE_o1_dw3, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2] * [dh2_dsum_h2] * 0.5)]\n[dE_o1_dw4, Calculator([dE_o1_do1] * [do1_dsum_o1] * [dsum_o1_dh2] * [dh2_dsum_h2] * 0.6)]\n\nFinally, we can update the weights using a learning rate(let's say 0.1):\n[w1_updated, Calculator([w1] - 0.1 * [dE_o1_dw1])]\n[w2_updated, Calculator([w2] - 0.1 * [dE_o1_dw2])]\n[w3_updated, Calculator([w3] - 0.1 * [dE_o1_dw3])]\n[w4_updated, Calculator([w4] - 0.1 * [dE_o1_dw4])]\n[w5_updated, Calculator([w5] - 0.1 * [dE_o1_dw5])]\n[w6_updated, Calculator([w6] - 0.1 * [dE_o1_dw6])]\nThese updated weights can then be used for the next iteration of training."},
-            {"role": "user", "content": query}], max_tokens=450)
+            {"role": "user", "content": query}], max_tokens=550)
 
         return answer
+
+    def base_model_answer(self, question):
+        return openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpfull question answering assistant"},
+                                                                             {"role": "user", "content": question}], max_tokens=500)
 
     def humanAnswer(self, question):
         print(question)

@@ -15,67 +15,27 @@ class DATU:
         self.manipulator = Manipulator()
         openai.api_key = key
 
-
-
-    def method_1_answer(self, question):
-        # get list of decomposed question
-        response = self.decomp_model.getSubQuestions(question)
-
-        # assign model to each sub question
-        sub_questions = []
-        [sub_questions.append((sub_question, self.manipulator.get_content(self.model_selector.getModel(sub_question)))) for
-         sub_question in response]
-
-        # Obtain the API requests to complete the sub answers
-        sub_answers = [self.manipulator.get_content(self.divineBeastModel.getAnswer("Main Question: "+ question + "sub_question: " + sub_question, type)) for sub_question, type in
-                       zip(sub_questions)]
-
-        # extract the API call from the sub question and apply tools to obtain sub_answers
-        sub_answers = self.manipulator.extract_API_call(sub_answers)
-
-        # Reformat the sub_answers to the correct format
-        sub_answers = self.manipulator.reformat_sub_answers(sub_answers, self.grammarParserModel)
-
-        # recompile the sub_answers and main question into an answer and justification
-        answer = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
-        
-        # clear variables
-        self.tools.clear_toolKit()
-
-        return answer
-
-    def method_2_answer(self, question):
+    def method_decomp_answer(self, question):
+        answer = ""
         try:
             # get list of decomposed question
             response = self.decomp_model.getSubQuestions(question)
 
-            # assign model to each sub question
-            sub_questions = []
-            [sub_questions.append((sub_question, self.manipulator.get_content(self.model_selector.getModel(sub_question)))) for sub_question in response]
-
             # Obtain the API requests to complete the sub answers
             sub_answers = []
             facts = ""
-            for sub_question, type in zip(sub_questions):
-                sub_answers.append(self.manipulator.get_content(self.divineBeastModel.getAnswer("Facts: " + facts + "Question: " + sub_question, type)))
+            for sub_question in response:
+                sub_answers.append(self.manipulator.get_content(self.divineBeastModel.getAnswer("Facts: " + facts + "Question: " + sub_question, "[Base]")))
                 facts = "\n".join(sub_answers)
 
-            # extract the API call from the sub question and apply tools to obtain sub_answers
-            sub_answers = "\n".join(self.manipulator.extract_API_call(sub_answers))
-
-            # Reformat the sub_answers to the correct format
-            sub_answers = self.grammarParserModel.parse(sub_answers)
-
             # recompile the sub_answers and main question into an answer and justification
-            answer = self.recomp_model.getRecomp(self.manipulator.recomposition_format(question, sub_answers))
+            answer = self.recomp_model.getRecomp(question +  "\n".join(sub_answers))
         except:
-            print("Error in method 2")
-            
-        # clear variables
-        self.tools.clear_toolKit()
-        return answer
+            print("Error in decomp recomp")
 
-    def method_3_answer(self, question):
+        return answer, response, facts
+
+    def method_complex_tool_answer(self, question):
         # get list of decomposed question
         response = "\n".join(self.decomp_model.getSubQuestions(question))
         print(response)
@@ -99,10 +59,14 @@ class DATU:
         
         return answer
 
-    def base_model_answer(self, question):
-        return openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a helpfull question answering assistant"},
-                                                                             {"role": "user", "content": question}], max_tokens=500)["choices"][0]["message"]["content"]
+    def method_data_qa_tool_answer(self, question):
+        answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(question, "[Wiki]"))
+        return answer
 
-    def math_model(self, equation):
+    def base_model_answer(self, question):
+        answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(question, "[Base]"))
+        return answer
+
+    def method_math_tool_answer(self, equation):
         answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(equation, "[math]"))
         return self.manipulator.extract_API_call(answer)

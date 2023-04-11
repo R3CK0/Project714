@@ -1,8 +1,8 @@
 import mysql.connector
-import json
+import csv
 from tqdm import tqdm
 import time
-from DATU import DATU
+from DATU import *
 
 class Database:
     
@@ -10,21 +10,21 @@ class Database:
         self.db = mysql.connector.connect(
             host='localhost',
             user='root',
-            passwd='root',
+            passwd='N1c0o9a5$',
             database='Answers'
         )
         self.mycursor = self.db.cursor()
-        model = DATU()
+
         
     def create_table(self):
-        self.mycursor.execute("CREATE TABLE questions_answer_model(id INT NOT NULL,question VARCHAR(300) NOT NULL,our_model_answer VARCHAR(300) NOT NULL, our_model_reasoning VARCHAR(300) NOT NULL, gpt_answer VARCHAR(300) NOT NULL, PRIMARY KEY(id));")
+        self.mycursor.execute("CREATE TABLE decomp_recomp_model (id INT NOT NULL,question VARCHAR(300) NOT NULL,our_model_answer VARCHAR(300) NOT NULL, our_model_reasoning VARCHAR(300) NOT NULL, our_model_facts VARCHAR(300) NOT NULL, gpt_answer VARCHAR(300) NOT NULL, PRIMARY KEY(id));")
         
     def fill_database(self, file_questions:str):
 
         # Open the JSON file
         with open(file_questions, 'r') as f:
-            # Load the data from the file
-            data = json.load(f)
+            # Load the data from the csv file
+            data = csv.reader(f)
             # max length question is 274
 
         missed_index = []
@@ -34,13 +34,12 @@ class Database:
         count = 0
         time_start = time.time()
 
-        for sample in tqdm(data):
+        for question in tqdm(data):
             count += 1
             try:
-                question = sample['question']
-                answer, reasoning = self.model.method_1_answer(question)
+                answer, reasoning, facts = self.model.method_decomp_answer(question)
                 gpt_answer = self.model.base_model_answer(question)
-                string = f"INSERT INTO questions_answer_model (id, question, our_model_answer, our_model_reasoning, gpt_answer) VALUES ({question_id}, '{question}', '{answer}', '{reasoning}', '{gpt_answer}');"
+                string = f"INSERT INTO questions_answer_model (id, question, our_model_answer, our_model_reasoning, our_model_facts, gpt_answer) VALUES ({question_id}, '{question}', '{answer}', '{reasoning}', '{facts}', '{gpt_answer}');"
                 self.mycursor.execute(string)
                 self.db.commit()
                 question_id += 1
