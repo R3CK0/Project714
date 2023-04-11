@@ -1,5 +1,5 @@
 import enum
-import regex as re
+import re
 import wikipediaapi
 from api_tools import ToolKit
 
@@ -25,9 +25,9 @@ class Manipulator():
 
     def remove_pattern(self, text: str, pattern: str) -> tuple:
         # Compile the regex pattern
-        regex_pattern = re.compile(pattern)
+        regex_pattern = re.compile(pattern.format())
         # Search for the pattern in the text
-        match = regex_pattern.search(text)
+        match = regex_pattern.search(text,re.UNICODE)
         if match:
             # Get the start index and end index of the match
             start_index = match.start()
@@ -56,7 +56,7 @@ class Manipulator():
         return original_str[:pos] + '[' + insert_str + ']' + original_str[pos:]
 
     def parse_math(self, text: str):
-        indexes, patterns_removed = self.find_and_extract_all(text, '^\[[a-zA-Z0-9_-,()]*Calculator([0-9a-zA-Z#\p{Sm}]*)\]$')
+        indexes, patterns_removed = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_,()]*Calculator\([^\]]*[\u2200-\u22FF][^\]]*\)\]')
         for i in range(len(patterns_removed)):
             split_pattern = patterns_removed[i].split('Calculator(')
             expression = split_pattern[-1][:-2]
@@ -78,7 +78,7 @@ class Manipulator():
 
     def parse_wiki(self, text: str):
         # find pattern remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(text, '\[Wiki(.*?)\]')
+        indexes, paterns_removed = self.find_and_extract_all(text, r'\[Wiki\(.+?\)\]')
         for i in range(len(paterns_removed)):
             patern_removed = patern_removed[7:-2]
             try:
@@ -91,7 +91,7 @@ class Manipulator():
 
     def parse_qa(self, text: str):
         # find patten remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(text, '\[[a-zA-Z0-9_-,()]*QA(.*?)\]')
+        indexes, paterns_removed = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_,()]*QA\(.*?\)\]')
         for i in range(len(paterns_removed)):
             split_pattern = paterns_removed[i].split('QA(')
             patern_removed = split_pattern[-1][:-2]
