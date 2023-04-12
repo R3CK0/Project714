@@ -15,7 +15,7 @@ class Manipulator():
         wiki = 'wiki'
         
     def format_and_insert_var(self, var, result):
-        var = var.replace(",", "").replace("[", "").replace("]", "").replace(" ", "").replace("(", "").replace(")", "")
+        var = var.replace(",", "").replace("[", "").replace("]", "").replace(" ", "")
         self.tool.variables[var] = str(result)
 
     def replace_keys_with_values(self, s:str):
