@@ -35,18 +35,22 @@ class Database:
         count = 0
         time_start = time.time()
 
+        results = pd.DataFrame(columns=['id', 'question', 'our_model_answer', 'our_model_reasoning', 'our_model_facts', 'gpt_answer'])
+
         for question in tqdm(data["Questions"]):
             count += 1
             try:
                 answer, reasoning, facts = self.model.method_decomp_answer(question)
                 gpt_answer = self.model.base_model_answer(question)
-                string = f"INSERT INTO questions_answer_model (id, question, our_model_answer, our_model_reasoning, our_model_facts, gpt_answer) VALUES ({question_id}, '{question}', '{answer}', '{reasoning}', '{facts}', '{gpt_answer}');"
-                self.mycursor.execute(string)
-                self.db.commit()
+                results = results.append({'id': question_id, 'question': question, 'our_model_answer': answer, 'our_model_reasoning': reasoning, 'our_model_facts': facts, 'gpt_answer': gpt_answer}, ignore_index=True)
+                #string = f"INSERT INTO questions_answer_model (id, question, our_model_answer, our_model_reasoning, our_model_facts, gpt_answer) VALUES ({question_id}, '{question}', '{answer}', '{reasoning}', '{facts}', '{gpt_answer}');"
+                #self.mycursor.execute(string)
+                #self.db.commit()
                 question_id += 1
+                results.to_csv('results.csv', index=False)
 
-            except mysql.connector.Error as error:
-                print("Error occurred: {}".format(error))
+            except:
+                print("Error occurred")
                 missed_index.append(question_id)
                 question_id += 1
 
@@ -54,6 +58,8 @@ class Database:
                 count = 0
                 if time.time()-time_start < 60:
                     time.sleep(60-(time.time()-time_start))
+
+
 
                 
         print(f'missing index are the following: ')

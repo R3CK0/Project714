@@ -60,7 +60,7 @@ class DATU:
         return answer
 
     def method_data_qa_tool_answer(self, question):
-        answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(question, "[Wiki]"))
+        answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(question, "[QA]"))
         return answer
 
     def base_model_answer(self, question):

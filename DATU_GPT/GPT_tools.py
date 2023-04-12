@@ -204,6 +204,10 @@ class AnswerModel:
                                                        "content": "A rectangle has an area of 60 square cm and a width of 5 cm. Calculate the length of the rectangle."},
                                                       {"role": "assistant",
                                                        "content": "A rectangle has an area of 60 square cm and a width of 5 cm. To find the length of the rectangle, use the formula for the area of a rectangle: Area = length * width. Rearrange the formula and solve for the length: length = [Calculator(60 / 5)] cm."},
+                                                      {"role": "user",
+                                                       "content": "Find the second derivative of the function f(x) = sin(x) * cos(x) with respect to x."},
+                                                      {"role": "assistant",
+                                                       "content": "To find the second derivative of the function f(x) = sin(x) * cos(x) with respect to x, first find the first derivative, f'(x), using the product rule: f'(x) = [f(x)’, Calculator(d(sin(x) * cos(x))/dx)]. Next, find the second derivative, f''(x), by differentiating f'(x) with respect to x: f''(x) = [Calculator(d(#f'(x)#))]."},
                                                       {"role": "user", "content": question}], max_tokens=200)
 
     def qaModel(self, question):
