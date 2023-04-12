@@ -7,7 +7,7 @@ from api_tools import ToolKit
 class Manipulator():
 
     def __init__(self):
-        tool = ToolKit()
+        self.tool = ToolKit()
         pass
 
     class ModelType(enum.Enum):

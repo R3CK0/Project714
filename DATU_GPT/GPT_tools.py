@@ -106,56 +106,6 @@ class AnswerModel:
                                                        "content": "There are 8 apples and 5 oranges in the fruit basket, making a total of [Calculator(8 + 5)] fruits in the basket. Apples represent [Calculator(8 / 13)]% of the total fruits."},
 
                                                       {"role": "user",
-                                                       "content": "A car travels 120 miles in 3 hours. What is the average speed of the car in miles per hour?"},
-                                                      {"role": "assistant",
-                                                       "content": "A car travels 120 miles in 3 hours. The average speed of the car is [Calculator(120 / 3)] miles per hour."},
-
-                                                      {"role": "user",
-                                                       "content": "The price of a product increased from $20 to $25. What is the percentage increase in the price?"},
-                                                      {"role": "assistant",
-                                                       "content": "The price of a product increased from $20 to $25. To find the percentage increase, we can use the formula: percentage increase = [(new price - old price) / old price] * 100. So, the percentage increase in the price is [Calculator(((25 - 20) / 20) * 100)]%."},
-
-                                                      {"role": "user",
-                                                       "content": "A square has a side length of 9 cm. Calculate the area and the perimeter of the square."},
-                                                      {"role": "assistant",
-                                                       "content": "A square has a side length of 9 cm. The area of the square is [Calculator(9 * 9)] square cm. The perimeter of the square is [Calculator(4 * 9)] cm."},
-
-                                                      {"role": "user",
-                                                       "content": "An isosceles triangle has two equal sides of 7 cm each and a base of 10 cm. Calculate the perimeter of the triangle."},
-                                                      {"role": "assistant",
-                                                       "content": "An isosceles triangle has two equal sides of 7 cm each and a base of 10 cm. The perimeter of the triangle is [Calculator(7 + 7 + 10)] cm."},
-
-                                                      {"role": "user",
-                                                       "content": "Find the derivative of the function f(x) = 3x^2 + 2x - 5."},
-                                                      {"role": "assistant",
-                                                       "content": "To find the derivative of the function f(x) = 3x^2 + 2x - 5, we can use the power rule. The derivative, f'(x), is [Calculator(d(3x^2 + 2x - 5)/dx)]."},
-
-                                                      {"role": "user",
-                                                       "content": "Calculate the integral of the function f(x) = 4x^3 - 2x + 1 between the limits x = 1 and x = 3."},
-                                                      {"role": "assistant",
-                                                       "content": "To calculate the integral of the function f(x) = 4x^3 - 2x + 1 between the limits x = 1 and x = 3, first find the indefinite integral, F(x): F(x) = [F(x), Calculator(integral(4x^3 - 2x + 1, x))]. Next, evaluate F(x) at the limits x = 1 and x = 3: F(3) - F(1) = [F(3), Calculator(evaluate #F(x)# at x=3)] - [F(0), Calculator(evaluate #F(x)# at x=0)] (approximately)."},
-
-                                                      {"role": "user",
-                                                       "content": "Find the derivative of the function f(x) = e^(2x) + ln(x) with respect to x."},
-                                                      {"role": "assistant",
-                                                       "content": "To find the derivative of the function f(x) = e^(2x) + ln(x) with respect to x, we can use the chain rule for e^(2x) and the derivative of ln(x). The derivative, f'(x), is [Calculator(d(e^(2x) + ln(x))/dx)]."},
-
-                                                      {"role": "user",
-                                                       "content": "Find the derivative of the function f(x) = ln(x^2 + 1) with respect to x."},
-                                                      {"role": "assistant",
-                                                       "content": "To find the derivative of the function f(x) = ln(x^2 + 1) with respect to x, we can use the chain rule. The derivative, f'(x), is [Calculator(d(ln(x^2 + 1))/dx)]."},
-
-                                                      {"role": "user",
-                                                       "content": "Find the derivative of the function f(x) = x^3 * e^(2x) with respect to x."},
-                                                      {"role": "assistant",
-                                                       "content": "To find the derivative of the function f(x) = x^3 * e^(2x) with respect to x, we can use the product rule. The derivative, f'(x), is [Calculator(d(x^3 * e^(2x))/dx)]."},
-
-                                                      {"role": "user",
-                                                       "content": "Find the second derivative of the function f(x) = sin(x) * cos(x) with respect to x."},
-                                                      {"role": "assistant",
-                                                       "content": "To find the second derivative of the function f(x) = sin(x) * cos(x) with respect to x, first find the first derivative, f'(x), using the product rule: f'(x) = [f(x)’, Calculator(d(sin(x) * cos(x))/dx)]. Next, find the second derivative, f''(x), by differentiating f'(x) with respect to x: f''(x) = [Calculator(d(#f'(x)#))]."},
-
-                                                      {"role": "user",
                                                        "content": "Calculate the integral of the function f(x) = x * e^(-x^2) between the limits x = 0 and x = 2."},
                                                       {"role": "assistant",
                                                        "content": "To calculate the integral of the function f(x) = x * e^(-x^2) between the limits x = 0 and x = 2, first find the indefinite integral, F(x): F(x) = [F(x), Calculator(integral(x * e^(-x^2), x))]. Next, evaluate F(x) at the limits x = 0 and x = 2: F(2) - F(0) = [F(2), Calculator(evaluate #F(x)# at x=2)] - [F(0), Calculator(evaluate #F(x)# at x=0)] (approximately)."},
@@ -246,29 +196,6 @@ class AnswerModel:
                                                        "content": "An equilateral triangle has a side length of 10 cm. To calculate the height, use the Pythagorean theorem in a 30-60-90 right triangle formed by bisecting the equilateral triangle: height = [height, Calculator(sqrt(10^2 - (10 / 2)^2))] cm. The area of the triangle is [Calculator(0.5 * 10 * #height#)] square cm."},
 
                                                       {"role": "user",
-                                                       "content": "A circle has a diameter of 8 cm. Calculate the circumference and the area of the circle."},
-                                                      {"role": "assistant",
-                                                       "content": "A circle has a diameter of 8 cm, which means the radius is [Calculator(8 / 2)] cm. The circumference of the circle is [Calculator(2 * 3.14159 * 4)] cm (approximately). The area of the circle is [Calculator(3.14159 * 4^2)] square cm (approximately)."},
-
-                                                      {"role": "user",
-                                                       "content": "A cylinder has a height of 10 cm and a base radius of 4 cm. Calculate the volume and the surface area of the cylinder."},
-                                                      {"role": "assistant",
-                                                       "content": "A cylinder has a height of 10 cm and a base radius of 4 cm. The volume of the cylinder is [Calculator(3.14159 * 4^2 * 10)] cubic cm (approximately). The surface area of the cylinder is [Calculator(2 * 3.14159 * 4 * (4 + 10))] square cm (approximately)."},
-                                                      {"role": "user", "content": "Calculate the square root of 144."},
-                                                      {"role": "assistant",
-                                                       "content": "The square root of 144 is [Calculator(sqrt(144))]."},
-
-                                                      {"role": "user",
-                                                       "content": "A triangle has angles of 40 degrees and 70 degrees. What is the third angle?"},
-                                                      {"role": "assistant",
-                                                       "content": "A triangle has angles of 40 degrees and 70 degrees. The sum of the angles in a triangle is always 180 degrees. To find the third angle, subtract the given angles from 180: third angle = [Calculator(180 - 40 - 70)] degrees."},
-
-                                                      {"role": "user",
-                                                       "content": "A square has a side length of 6 cm. Calculate the diagonal of the square."},
-                                                      {"role": "assistant",
-                                                       "content": "A square has a side length of 6 cm. To calculate the diagonal of the square, use the Pythagorean theorem: diagonal = [Calculator(sqrt(6^2 + 6^2))] cm."},
-
-                                                      {"role": "user",
                                                        "content": "A car travels 80 km in 1.5 hours. What is the car's average speed in kilometers per hour?"},
                                                       {"role": "assistant",
                                                        "content": "A car travels 80 km in 1.5 hours. To find the car's average speed in kilometers per hour, divide the distance by the time: average speed = [Calculator(80 / 1.5)] km/h."},
@@ -336,21 +263,14 @@ class AnswerModel:
                                                       {"role": "user", "content": question}], max_tokens=500)
 
     def completeAnswerModel(self, query):
+        print("completeAnswerModel")
         answer = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[
             {"role": "system",
-             "content": "You are a helpfull assistant nemed jessica who answer questions with the use of outside tools. The tools allow to access computing and API of different websites to obtain correct results. These are the tools : [Calculator(equation)], [Wiki(subject)], [QA(question)].\n - The Calculator tool is used to solve numerical equations as well as to resolve complex algebraic equations such as calculus problems.\n- The Wiki tool allows to obtain verified information on a subject.\n- The QA tool is used to answer common knowledge questions questions. \nThe assistant is given a main question as well as subquestions that when answered can help produce a better answer to the main question."},
-            {"role": "user",
-             "content": "A jet wing is experiencing air turbulence due to Mach speed airflow. The jet is flying at an altitude where the speed of sound is 340 m/s, and the air density is 0.4 kg/m³. The jet has a wing surface area of 30 m² and is flying at Mach 1.5. Estimate the lift force on the wing due to the air turbulence.\n1- What is the velocity of the jet in m/s? \n2- What is the dynamic pressure acting on the wing? \n3- What is the lift coefficient for a typical jet wing at Mach 1.5? \n4- How do we calculate the lift force on the jet wing?"},
-            {"role": "assistant",
-             "content": " 1- To find the velocity of the jet in m/s, we can use the Mach number (M) and the speed of sound (a) at the given altitude. The formula is: \nv = M * a. \nUsing the given values, we have: \nv = [velocity, Calculator(1.5 * 340)] m/s. \n\n2- The dynamic pressure (q) acting on the wing can be calculated using the formula: \nq = 0.5 * ρ * v^2, \nwhere ρ is the air density and v is the jet's velocity. Using the given values, we get: \nq = [dynamic_pressure, Calculator(0.5 * 0.4 * #velocity#^2)] Pa. \n\n3- The lift coefficient (Cl) for a typical jet wing at Mach 1.5 varies depending on the specific airfoil design and the angle of attack. For the sake of this example, let's assume a lift coefficient of 0.6. \n\n4- To calculate the lift force (L) on the jet wing, we can use the formula: \nL = Cl * q * A, \nwhere Cl is the lift coefficient, q is the dynamic pressure, and A is the wing surface area. Using the given and calculated values, we have: \nL = [lift_force, Calculator(0.6 * #dynamic_pressure# * 30)] N."},
+             "content": "You are a model who answer questions with the use of outside tools. The tools allow to access computing and API of different websites to obtain correct results. These are the tools : [Calculator(equation)], [Wiki(subject)], [QA(question)].\n - The Calculator tool is used to solve numerical equations as well as to resolve complex algebraic equations such as calculus problems.\n- The Wiki tool allows to obtain verified information on a subject.\n- The QA tool is used to answer common knowledge questions questions. \nThe assistant is given a main question as well as subquestions that when answered can help produce a better answer to the main question."},
             {"role": "user",
              "content": "How much force is required to accelerate a 1500 kg car from 0 to 100 km/h in 10 seconds? \n1- How do we convert the velocity from km/h to m/s? \n2- What is the formula to calculate the force required for acceleration? \n3- How do we calculate the force required to accelerate a 1500 kg car from 0 to 100 km/h in 10 seconds?"},
             {"role": "assistant",
              "content": "1- To convert the velocity from km/h to m/s, we can use the following conversion factor: 1 km/h = 1000 m / 3600 s. So, [v_ms, Calculator(100 * (1000/3600))]. \n2- The formula to calculate the force required for acceleration is F = ma, where F is the force, m is the mass, and a is the acceleration. \n3- To calculate the force required to accelerate a 1500 kg car from 0 to 100 km/h in 10 seconds, we first need to find the acceleration. We can use the formula a = Δv / t, where Δv is the change in velocity and t is the time. In this case, Δv is equal to the final velocity in m/s (which we calculated in subquestion 1) minus the initial velocity (0 m/s), and t is 10 seconds. We can then use the formula from subquestion 2 with the mass of the car (1500 kg) and the calculated acceleration to find the force required: \nF = [F, Calculator(1500 * (#v_ms# / 10))]N."},
-            {"role": "user",
-             "content": "If you invest $5,000 in a savings account with an annual interest rate of 4%, compounded monthly, how much will I have in the account after 3 years? \n1- What is the monthly interest rate? \n2- How many times will the interest be compounded in 3 years? \n3- What is the future value of the investment after 3 years?"},
-            {"role": "assistant",
-             "content": "1- To find the mass flow rate of water, we need to convert the volume flow rate from L/min to m^3/s and then multiply it by the density of water. The density of water is approximately 1000 kg/m^3. We have: \n1 L = 0.001 m^3, and 1 min = 60 s. So, [mass_flow_rate, Calculator(200 * (0.001/60) * 1000)] kg/s. \n2- The potential energy equation for fluids is PE = mgh, where PE is the potential energy, m is the mass, g is the gravitational acceleration (approximately 9.81 m/s^2), and h is the height. \n3- To calculate the required power for pumping the water to the given height, we can use the formula P = PE/t, where P is the power, PE is the potential energy, and t is the time. We can substitute the potential energy equation from subquestion 2 and the mass flow rate from subquestion 1: \nP = (mgh) / t = (mass flow rate * g * h) / t. Since we know the mass flow rate is in kg/s, the time t will cancel out, and we are left with: \nP = [P, Calculator(#mass_flow_rate# * 9.81 * 30)] W."},
             {"role": "user",
              "content": "How do you find the integral of the function f(x) = e^(-2x) from 0 to infinity? \n1- What is the antiderivative of e^(-2x)? \n2- How do we evaluate an integral with limits from 0 to infinity? \n3- What is the value of the integral of e^(-2x) from 0 to infinity?"},
             {"role": "assistant",
