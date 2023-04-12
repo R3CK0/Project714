@@ -78,7 +78,7 @@ class Manipulator():
 
     def parse_wiki(self, text: str):
         # find pattern remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(text, r'\[Wiki\(.+?\)\]')
+        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[Wiki\(.+?\)\]')
         for i in range(len(paterns_removed)):
             patern_removed = patern_removed[7:-2]
             try:
@@ -91,7 +91,7 @@ class Manipulator():
 
     def parse_qa(self, text: str):
         # find patten remove and keep index start
-        indexes, paterns_removed = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_,()]*QA\(.*?\)\]')
+        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_,()]*QA\(.*?\)\]')
         for i in range(len(paterns_removed)):
             split_pattern = paterns_removed[i].split('QA(')
             patern_removed = split_pattern[-1][:-2]
