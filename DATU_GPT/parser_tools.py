@@ -50,13 +50,13 @@ class Manipulator():
             indexes.append(index)
             remove_patterns.append(removed_pattern)
             new_text, index, removed_pattern = self.remove_pattern(new_text, pattern)
-        return indexes, remove_patterns
+        return indexes, remove_patterns, new_text
 
     def insert_string(self, original_str, insert_str, pos):
         return original_str[:pos] + '[' + insert_str + ']' + original_str[pos:]
 
     def parse_math(self, text: str):
-        indexes, patterns_removed = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_,()]*Calculator\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
+        indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_,()]*Calculator\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
         for i in range(len(patterns_removed)):
             split_pattern = patterns_removed[i].split('Calculator(')
             expression = split_pattern[-1][:-2]
