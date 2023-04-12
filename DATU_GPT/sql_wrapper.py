@@ -6,7 +6,7 @@ import pandas as pd
 
 class Database:
     
-    def __init__(self):
+    def __init__(self, model):
         self.db = mysql.connector.connect(
             host='localhost',
             user='root',
@@ -14,6 +14,7 @@ class Database:
             database='Answers'
         )
         self.mycursor = self.db.cursor()
+        self.model = model
 
         
     def create_table(self):

@@ -69,4 +69,5 @@ class DATU:
 
     def method_math_tool_answer(self, equation):
         answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(equation, "[Math]"))
+        print(answer)
         return self.manipulator.extract_API_call(answer)
