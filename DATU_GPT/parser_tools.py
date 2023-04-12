@@ -94,7 +94,7 @@ class Manipulator():
 
     def parse_qa(self, text: str):
         # find patten remove and keep index start
-        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\- _,()]*QA\(.*?\)\]')
+        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\- _,()]*QA\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
         delay = 0
         for i in range(len(paterns_removed)):
             split_pattern = paterns_removed[i].split('QA(')
