@@ -41,7 +41,7 @@ class DATU:
         print(response)
 
         # Obtain the API requests to complete the sub answers
-        sub_answers = self.manipulator.get_content(self.divineBeastModel.getAnswer(question + "\n" + response))
+        sub_answers = self.manipulator.get_content(self.divineBeastModel.getAnswer(question + "\n" + response, "[Math]"))
         print(sub_answers)
 
         # extract the API call from the sub question and apply tools to obtain sub_answers
@@ -68,5 +68,5 @@ class DATU:
         return answer
 
     def method_math_tool_answer(self, equation):
-        answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(equation, "[math]"))
+        answer = self.manipulator.get_content(self.divineBeastModel.getAnswer(equation, "[Math]"))
         return self.manipulator.extract_API_call(answer)

@@ -1,8 +1,8 @@
 import mysql.connector
-import csv
 from tqdm import tqdm
 import time
 from DATU import *
+import pandas as pd
 
 class Database:
     
@@ -24,7 +24,7 @@ class Database:
         # Open the JSON file
         with open(file_questions, 'r') as f:
             # Load the data from the csv file
-            data = csv.reader(f)
+            data = pd.read_csv(f, delimiter=';')
             # max length question is 274
 
         missed_index = []
@@ -34,7 +34,7 @@ class Database:
         count = 0
         time_start = time.time()
 
-        for question in tqdm(data):
+        for question in tqdm(data["Questions"]):
             count += 1
             try:
                 answer, reasoning, facts = self.model.method_decomp_answer(question)

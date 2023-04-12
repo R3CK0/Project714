@@ -4,11 +4,11 @@ from sql_wrapper import *
 def main():
     while(True):
         # Get the question
-        question = input("Please enter your question: ")
+        #question = input("Please enter your question: ")
         API_KEY = open("../../OpenAIApproach/OpenAIAPIKey.txt", "r").read()
         model = DATU(API_KEY)
         sql_script = Database()
-        sql_script.create_table()
+        #sql_script.create_table()
         sql_script.fill_database("fact_questions.csv")
 
         # model 1
