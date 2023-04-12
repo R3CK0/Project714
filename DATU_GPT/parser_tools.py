@@ -57,6 +57,7 @@ class Manipulator():
 
     def parse_math(self, text: str):
         indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_ ,()]*Calculator\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
+        delay = 0
         for i in range(len(patterns_removed)):
             split_pattern = patterns_removed[i].split('Calculator(')
             expression = split_pattern[-1][:-2]
@@ -67,8 +68,8 @@ class Manipulator():
                     result = self.tool.solve_math_api(expression)
                 else:
                     result = self.tool.call_math_api(expression)
-                
-                text = self.insert_string(text, result, indexes[i])
+                text = self.insert_string(text, result, indexes[i] + delay)
+                delay = delay + len(result) + 2
                 if len(split_pattern) > 1:
                     # adding variables to dictionary
                     self.format_and_insert_var(split_pattern[0], result)
@@ -79,12 +80,14 @@ class Manipulator():
     def parse_wiki(self, text: str):
         # find pattern remove and keep index start
         indexes, paterns_removed = self.find_and_extract_all(text, r'\[Wiki\(.+?\)\]')
+        delay = 0
         for i in range(len(paterns_removed)):
             patern_removed = patern_removed[7:-2]
             try:
                 # call wiki api
                 result = self.tool.call_wiki_API(patern_removed)
-                text = self.insert_string(text, result, indexes[i])
+                text = self.insert_string(text, result, indexes[i] + delay)
+                delay = delay + len(result) + 2
             except NameError as e:
                 print(str(e))
         return text
@@ -92,14 +95,15 @@ class Manipulator():
     def parse_qa(self, text: str):
         # find patten remove and keep index start
         indexes, paterns_removed = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_,()]*QA\(.*?\)\]')
+        delay = 0
         for i in range(len(paterns_removed)):
             split_pattern = paterns_removed[i].split('QA(')
             patern_removed = split_pattern[-1][:-2]
-            #patern_removed = patern_removed[5:-2]
             try:
                 # call qa api
                 result = self.tool.call_qa_API(patern_removed)
-                text = self.insert_string(text, result, indexes[i])
+                text = self.insert_string(text, result, indexes[i] + delay)
+                delay = delay + len(result) + 2
                 if len(split_pattern) > 1:
                     if len(split_pattern) > 1:
                         self.format_and_insert_var(split_pattern[0], result)
