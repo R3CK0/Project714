@@ -99,6 +99,8 @@ class Manipulator():
         for i in range(len(paterns_removed)):
             split_pattern = paterns_removed[i].split('QA(')
             patern_removed = split_pattern[-1][:-2]
+            # replace variables
+            patern_removed = self.replace_keys_with_values(patern_removed)
             try:
                 # call qa api
                 result = self.tool.call_qa_api(patern_removed)
