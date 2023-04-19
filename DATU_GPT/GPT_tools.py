@@ -96,7 +96,7 @@ class AnswerModel:
 
     def mathModel(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo",
-                                            messages=[{"role": "system", "content": "You are a assistant which task is to add calls to a Calculator API to a piece of text related to a math problem. The calculations should help you get information required to complete the text. You can call the API by writing [Calculator(equation)] where equation is the equation you want solved."},
+                                            messages=[{"role": "system", "content": "You are a assistant which task is to answer questions by using a Calculator tool. The tool can be used by writing [Calculator(equation)] where equation is the equation you want solved. You will not attempt to solve equations on without using the Calculator tool. You can create and store formulas, values or results in variables using [variable, Calculator(result)]. you may then use these stored variable in your calculator tool by surounding them with ##, example [F(2), Calculator(evaluate #F(x)# at x = 2)]"},
                                                       {"role": "user", "content": "Out of 1400 participants, 400 (or 29%) passed the test"},
                                                       {"role": "assistant", "content": "Out of 1400 participants, 400 (or [Calculator(400 / 1400)]%) passed the test."},
 
@@ -111,9 +111,9 @@ class AnswerModel:
                                                        "content": "To calculate the integral of the function f(x) = x * e^(-x^2) between the limits x = 0 and x = 2, first find the indefinite integral, F(x): F(x) = [F(x), Calculator(integral(x * e^(-x^2), x))]. Next, evaluate F(x) at the limits x = 0 and x = 2: F(2) - F(0) = [F(2), Calculator(evaluate #F(x)# at x=2)] - [F(0), Calculator(evaluate #F(x)# at x=0)] (approximately)."},
 
                                                       {"role": "user",
-                                                       "content": "Find the derivative of the function f(x) = 1 / (x^2 + 2x + 3) with respect to x."},
+                                                       "content": "Find the derivative of the function f(x) = 1 / (x^2 + 2x + 3) with respect to x evaluated for x = 2."},
                                                       {"role": "assistant",
-                                                       "content": "To find the derivative of the function f(x) = 1 / (x^2 + 2x + 3) with respect to x, we can use the chain rule. The derivative, f'(x), is [Calculator(d(1 / (x^2 + 2x + 3))/dx)]."},
+                                                       "content": "To find the derivative of the function f(x) = 1 / (x^2 + 2x + 3) with respect to x, we can use the chain rule. The derivative, f'(x), is [df(x), Calculator(d(1 / (x^2 + 2x + 3))/dx)]. Next, we evaluate f'(x) at x = 2: f'(2) = [df(2), Calculator(evaluate #df(x)# at x=2)]."},
 
                                                       {"role": "user",
                                                        "content": "A trapezoid has bases of 6 cm and 10 cm, and a height of 4 cm. Calculate the area of the trapezoid."},
@@ -136,9 +136,9 @@ class AnswerModel:
                                                        "content": "A cone has a radius of 4 cm and a height of 6 cm. The volume of the cone is [Calculator((1/3) * 3.14159 * 4^2 * 6)] cubic cm (approximately). The surface area of the cone is [Calculator(3.14159 * 4 * (4 + sqrt(4^2 + 6^2)))] square cm (approximately)."},
 
                                                       {"role": "user",
-                                                       "content": "Find the second derivative of the function f(x) = ln(x^2 + 2x) with respect to x."},
+                                                       "content": "Find the second derivative of the function f(x) = ln(x^2 + 2x) with respect to x. Evaluate the second derivative to x = 5"},
                                                       {"role": "assistant",
-                                                       "content": "To find the second derivative of the function f(x) = ln(x^2 + 2x) with respect to x, first find the first derivative, f'(x), using the chain rule: f'(x) = [f(x)’,Calculator(d(ln(x^2 + 2x))/dx)]. Next, find the second derivative, f''(x), by differentiating f'(x) with respect to x: f''(x) = [Calculator(d(#f'(x)#)/dx)]."},
+                                                       "content": "To find the second derivative of the function f(x) = ln(x^2 + 2x) with respect to x, first find the first derivative, f'(x), using the chain rule: f'(x) = [df(x), Calculator(d(ln(x^2 + 2x))/dx)]. Next, find the second derivative, f''(x), by differentiating f'(x) with respect to x: f''(x) = [ddf(x), Calculator(d(#df(x)#)/dx)]. Finally we evaluate f''(x) at x = 5: f''(5) = [ddf(5), Calculator(evaluate #ddf(x)# at x=5)]."},
 
                                                       {"role": "user",
                                                        "content": "Calculate the integral of the function f(x) = x * e^(x^2) between the limits x = 0 and x = 1."},
@@ -156,9 +156,9 @@ class AnswerModel:
                                                        "content": "To calculate the integral of the function f(x) = (3x^2 - 2x + 1)^2 between the limits x = 0 and x = 2, first find the indefinite integral, F(x): F(x) = [F(x), Calculator(integral((3x^2 - 2x + 1)^2))]. Next, evaluate F(x) at the limits x = 0 and x = 2: F(2) - F(0) = [F(2), Calculator(evaluate #F(x)# at x=2)] - [F(0), Calculator(evaluate #F(x)# at x=0)] (approximately)."},
 
                                                       {"role": "user",
-                                                       "content": "Find the derivative of the function f(x) = x^3 * cos(x) with respect to x."},
+                                                       "content": "Find the derivative of the function f(x) = x^3 * cos(x) with respect to x. Evaluate the derivative at x=2.334"},
                                                       {"role": "assistant",
-                                                       "content": "To find the derivative of the function f(x) = x^3 * cos(x) with respect to x, we can use the product rule. The derivative, f'(x), is [Calculator(d(x^3 * cos(x))/dx)]."},
+                                                       "content": "To find the derivative of the function f(x) = x^3 * cos(x) with respect to x, we can use the product rule. The derivative, f'(x), is [df(x), Calculator(d(x^3 * cos(x))/dx)]. Next, we evaluate f'(x) at x=2.334: f'(2.334) = [df(2.334), Calculator(evaluate #df(x)# at x=2.334)]."},
 
                                                       {"role": "user",
                                                        "content": "Find the derivative of the function f(x) = (2x^3 + 3x^2 - x + 1)^4 with respect to x."},
@@ -176,9 +176,9 @@ class AnswerModel:
                                                        "content": "A cone has a height of 9 cm and a base radius of 3 cm. The volume of the cone is [Calculator((1/3) * 3.14159 * 3^2 * 9)] cubic cm (approximately). To find the surface area, we first need to calculate the slant height: l = [l, Calculator(sqrt(3^2 + 9^2))] cm (approximately). The surface area of the cone is [Calculator(3.14159 * 3 * (3 + #l#))] square cm (approximately)."},
 
                                                       {"role": "user",
-                                                       "content": "Find the derivative of the function f(x) = (x^2 + 2x + 1) / (x^3 - x + 1) with respect to x."},
+                                                       "content": "Find the derivative of the function f(x) = (x^2 + 2x + 1) / (x^3 - x + 1) with respect to x. Evaluate the derivative at x=2"},
                                                       {"role": "assistant",
-                                                       "content": "To find the derivative of the function f(x) = (x^2 + 2x + 1) / (x^3 - x + 1) with respect to x, we can use the quotient rule. The derivative, f'(x), is [Calculator(d((x^2 + 2x + 1) / (x^3 - x + 1))/dx)]."},
+                                                       "content": "To find the derivative of the function f(x) = (x^2 + 2x + 1) / (x^3 - x + 1) with respect to x, we can use the quotient rule. The derivative, f'(x), is [df(x), Calculator(d((x^2 + 2x + 1) / (x^3 - x + 1))/dx)]. Next we evaluate f'(x) at x=2: f'(2) = [df(2), Calculator(evaluate #df(x)# at x=2)]."},
 
                                                       {"role": "user",
                                                        "content": "A triangle has sides of lengths 5 cm, 7 cm, and 9 cm. Calculate the area of the triangle using Heron's formula."},
@@ -205,9 +205,9 @@ class AnswerModel:
                                                       {"role": "assistant",
                                                        "content": "A rectangle has an area of 60 square cm and a width of 5 cm. To find the length of the rectangle, use the formula for the area of a rectangle: Area = length * width. Rearrange the formula and solve for the length: length = [Calculator(60 / 5)] cm."},
                                                       {"role": "user",
-                                                       "content": "Find the second derivative of the function f(x) = sin(x) * cos(x) with respect to x."},
+                                                       "content": "Find the second derivative of the function f(x) = sin(x) * cos(x) with respect to x. Evaluate the derivative at x=4.6"},
                                                       {"role": "assistant",
-                                                       "content": "To find the second derivative of the function f(x) = sin(x) * cos(x) with respect to x, first find the first derivative, f'(x), using the product rule: f'(x) = [f(x)’, Calculator(d(sin(x) * cos(x))/dx)]. Next, find the second derivative, f''(x), by differentiating f'(x) with respect to x: f''(x) = [Calculator(d(#f'(x)#))]."},
+                                                       "content": "To find the second derivative of the function f(x) = sin(x) * cos(x) with respect to x, first find the first derivative, f'(x), using the product rule: f'(x) = [df(x), Calculator(d(sin(x) * cos(x))/dx)]. Next, find the second derivative, f''(x), by differentiating f'(x) with respect to x: f''(x) = [ddf(x), Calculator(d(#df(x)#)/dx)]. Next, evaluate f''(x) at x=4.6: f''(4.6) = [ddf(4.6), Calculator(evaluate #ddf(x)# at x=4.6)]."},
                                                       {"role": "user", "content": question}], max_tokens=200)
 
     def qaModel(self, question):
@@ -216,17 +216,17 @@ class AnswerModel:
                                                       {"role": "user", "content": "What is the Great Wall of China made of?."},
                                                       {"role": "assistant", "content": "The Great Wall of China is a series of fortifications made of [QA('What materials were used to build the Great Wall of China?')]."},
                                                       {"role": "user", "content": "What well known tragic story was written by Shakespeare and where is it set?"},
-                                                      {"role": "assistant", "content": "Shakespeare's [x, QA('What is the name of the tragic love story written by Shakespeare?')] is a tragic love story set in [QA('Where is the setting of [x]?')]."},
+                                                      {"role": "assistant", "content": "Shakespeare's [x, QA('What is the name of the tragic love story written by Shakespeare?')] is a tragic love story set in [QA('Where is the setting of #x#?')]."},
                                                       {"role": "user", "content": "What is the Eiffel Tower?"},
                                                       {"role": "assistant", "content": "The Eiffel Tower is a [QA('What material is the Eiffel Tower made of?')] tower on the [QA('Where is the Eiffel Tower located in Paris?')] in [QA('In which country is the Eiffel Tower?')]."},
                                                       {"role": "user", "content": "What is the Biggest mountain on earth?"},
-                                                      {"role": "assistant", "content": "[x, QA('What is the name of Earth's highest mountain above sea level?')], Earth's highest mountain above sea level, is located in the [QA('In which mountain range is [x] located?')]."},
+                                                      {"role": "assistant", "content": "[x, QA('What is the name of Earth's highest mountain above sea level?')], Earth's highest mountain above sea level, is located in the [QA('In which mountain range is #x# located?')]."},
                                                       {"role": "user", "content": "What is the main function of the heart?"},
                                                       {"role": "assistant", "content": "The main function of the heart is to [QA('What is the primary function of the human heart?')], which helps distribute [QA('What substances does the heart help distribute throughout the body?')] throughout the body."},
                                                       {"role": "user", "content": "What is the primary purpose of the United Nations?"},
                                                       {"role": "assistant", "content": "The primary purpose of the United Nations is to [QA('What is the main goal of the United Nations?')], which includes promoting [QA('What are some key objectives of the United Nations?')]."},
                                                       {"role": "user", "content": "What is the capital of Australia?"},
-                                                      {"role": "assistant", "content": "The capital of Australia is [x, QA('What is the capital city of Australia?')], which is located in the [QA('In which territory is [x] located?')]."},
+                                                      {"role": "assistant", "content": "The capital of Australia is [x, QA('What is the capital city of Australia?')], which is located in the [QA('In which territory is #x# located?')]."},
                                                       {"role": "user", "content": "What is the speed of light?"},
                                                       {"role": "assistant", "content": "The speed of light is approximately [QA('What is the speed of light in a vacuum in meters per second?')] meters per second in a vacuum."},
                                                       {"role": "user", "content": "What is the significance of the Mona Lisa?"},

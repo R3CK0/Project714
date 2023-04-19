@@ -37,7 +37,7 @@ class DecompGPT:
                                                                                  {"role": "user", "content": question}], max_tokens=500)
         if token_info:
             print("Completion Tokents: " + str(response["usage"]["completion_tokens"]) + "Total tokens: " + str(response["usage"]["total_tokens"]))
-        return response["choices"][0]["message"]["content"].split("\n")
+        return response["choices"][0]["message"]["content"].split("\n"), response['usage']['total_tokens']
 
 
 class RecompGPT:
@@ -57,4 +57,4 @@ class RecompGPT:
                                                                                  {"role": "user", "content": question}], max_tokens=500)
         if token_info:
             print("Completion Tokents: " + str(response["usage"]["completion_tokens"]) + "Total tokens: " + str(response["usage"]["total_tokens"]))
-        return response["choices"][0]["message"]["content"]
+        return response["choices"][0]["message"]["content"], response['usage']['total_tokens']

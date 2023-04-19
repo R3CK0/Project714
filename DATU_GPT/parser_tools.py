@@ -94,14 +94,14 @@ class Manipulator():
 
     def parse_qa(self, text: str):
         # find patten remove and keep index start
-        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\- _,()]*QA\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
+        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\- _,()]*QA\([^\]]*[ a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
         delay = 0
         for i in range(len(paterns_removed)):
             split_pattern = paterns_removed[i].split('QA(')
             patern_removed = split_pattern[-1][:-2]
             try:
                 # call qa api
-                result = self.tool.call_qa_API(patern_removed)
+                result = self.tool.call_qa_api(patern_removed)
                 text = self.insert_string(text, result, indexes[i] + delay)
                 delay = delay + len(result) + 2
                 if len(split_pattern) > 1:
@@ -112,7 +112,7 @@ class Manipulator():
         return text
 
     def get_content(self, input):
-        return input["choices"][0]["message"]["content"]
+        return input["choices"][0]["message"]["content"], input['usage']['total_tokens']
 
     def extract_API_call(self, input):
         return self.parse_math(self.parse_wiki(self.parse_qa(input)))
@@ -123,6 +123,9 @@ class Manipulator():
     def recomposition_format(self, question, sub_answers):
         sub_answers_concaneted = "\n".join(sub_answers)
         return 'Question: ' + question + '\nFacts: ' + sub_answers_concaneted
+
+    def clear_Toolkit(self):
+        self.tool.clear_toolKit()
 
 
 # manipulator = Manipulator()
