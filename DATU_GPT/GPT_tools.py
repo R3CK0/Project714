@@ -96,7 +96,7 @@ class AnswerModel:
 
     def mathModel(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo",
-                                            messages=[{"role": "system", "content": "You are a assistant which task is to answer questions by using a Calculator tool. The tool can be used by writing [Calculator(equation)] where equation is the equation you want solved. You will not attempt to solve equations on without using the Calculator tool. You can create and store formulas, values or results in variables using [variable, Calculator(result)]. you may then use these stored variable in your calculator tool by surounding them with ##, example [F(2), Calculator(evaluate #F(x)# at x = 2)]"},
+                                            messages=[{"role": "system", "content": "You are a assistant which task is to answer questions by using a Calculator tool. The tool can be used by writing [Calculator(equation)] where equation is the equation you want solved."},
                                                       {"role": "user", "content": "Out of 1400 participants, 400 (or 29%) passed the test"},
                                                       {"role": "assistant", "content": "Out of 1400 participants, 400 (or [Calculator(400 / 1400)]%) passed the test."},
 
@@ -212,25 +212,25 @@ class AnswerModel:
 
     def qaModel(self, question):
         return openai.ChatCompletion.create(model="gpt-3.5-turbo",
-                                            messages=[{"role": "system", "content": "you are an assistant who's task is to add calls to a Question Answering API to a piece of text. The questions should help you get information required to complete the text. You can call the API by writing [QA(question)] where question is the question you want to ask. "},
-                                                      {"role": "user", "content": "What is the Great Wall of China made of?."},
-                                                      {"role": "assistant", "content": "The Great Wall of China is a series of fortifications made of [QA('What materials were used to build the Great Wall of China?')]."},
-                                                      {"role": "user", "content": "What well known tragic story was written by Shakespeare and where is it set?"},
-                                                      {"role": "assistant", "content": "Shakespeare's [x, QA('What is the name of the tragic love story written by Shakespeare?')] is a tragic love story set in [QA('Where is the setting of #x#?')]."},
+                                            messages=[{"role": "system", "content": "you are an assistant who's task is to answer questions using a knowledge base tool capable of answering with verified facts. The tool should help you get information required to complete the text. You can use the tool by writing [QA(question)] where question is the question you want to ask. "},
+                                                      # {"role": "user", "content": "What is the Great Wall of China made of?."},
+                                                      # {"role": "assistant", "content": "The Great Wall of China is a series of fortifications made of [QA('What materials were used to build the Great Wall of China?')]."},
+                                                      # {"role": "user", "content": "What well known tragic story was written by Shakespeare and where is it set?"},
+                                                      # {"role": "assistant", "content": "Shakespeare's [x, QA('What is the name of the tragic love story written by Shakespeare?')] is a tragic love story set in [QA('Where is the setting of #x#?')]."},
                                                       {"role": "user", "content": "What is the Eiffel Tower?"},
                                                       {"role": "assistant", "content": "The Eiffel Tower is a [QA('What material is the Eiffel Tower made of?')] tower on the [QA('Where is the Eiffel Tower located in Paris?')] in [QA('In which country is the Eiffel Tower?')]."},
                                                       {"role": "user", "content": "What is the Biggest mountain on earth?"},
                                                       {"role": "assistant", "content": "[x, QA('What is the name of Earth's highest mountain above sea level?')], Earth's highest mountain above sea level, is located in the [QA('In which mountain range is #x# located?')]."},
-                                                      {"role": "user", "content": "What is the main function of the heart?"},
-                                                      {"role": "assistant", "content": "The main function of the heart is to [QA('What is the primary function of the human heart?')], which helps distribute [QA('What substances does the heart help distribute throughout the body?')] throughout the body."},
-                                                      {"role": "user", "content": "What is the primary purpose of the United Nations?"},
-                                                      {"role": "assistant", "content": "The primary purpose of the United Nations is to [QA('What is the main goal of the United Nations?')], which includes promoting [QA('What are some key objectives of the United Nations?')]."},
-                                                      {"role": "user", "content": "What is the capital of Australia?"},
-                                                      {"role": "assistant", "content": "The capital of Australia is [x, QA('What is the capital city of Australia?')], which is located in the [QA('In which territory is #x# located?')]."},
-                                                      {"role": "user", "content": "What is the speed of light?"},
-                                                      {"role": "assistant", "content": "The speed of light is approximately [QA('What is the speed of light in a vacuum in meters per second?')] meters per second in a vacuum."},
-                                                      {"role": "user", "content": "What is the significance of the Mona Lisa?"},
-                                                      {"role": "assistant", "content": "The Mona Lisa is significant because it is a masterpiece by [QA('Who painted the Mona Lisa?')] and is known for its [QA('What are some features that make the Mona Lisa famous?')]."},
+                                                      # {"role": "user", "content": "What is the main function of the heart?"},
+                                                      # {"role": "assistant", "content": "The main function of the heart is to [QA('What is the primary function of the human heart?')], which helps distribute [QA('What substances does the heart help distribute throughout the body?')] throughout the body."},
+                                                      # {"role": "user", "content": "What is the primary purpose of the United Nations?"},
+                                                      # {"role": "assistant", "content": "The primary purpose of the United Nations is to [QA('What is the main goal of the United Nations?')], which includes promoting [QA('What are some key objectives of the United Nations?')]."},
+                                                      # {"role": "user", "content": "What is the capital of Australia?"},
+                                                      # {"role": "assistant", "content": "The capital of Australia is [x, QA('What is the capital city of Australia?')], which is located in the [QA('In which territory is #x# located?')]."},
+                                                      # {"role": "user", "content": "What is the speed of light?"},
+                                                      # {"role": "assistant", "content": "The speed of light is approximately [QA('What is the speed of light in a vacuum in meters per second?')] meters per second in a vacuum."},
+                                                      # {"role": "user", "content": "What is the significance of the Mona Lisa?"},
+                                                      # {"role": "assistant", "content": "The Mona Lisa is significant because it is a masterpiece by [QA('Who painted the Mona Lisa?')] and is known for its [QA('What are some features that make the Mona Lisa famous?')]."},
                                                       {"role": "user", "content": question}], max_tokens=500)
 
     def wikiModel(self, question):

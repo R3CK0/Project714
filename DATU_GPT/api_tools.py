@@ -30,20 +30,28 @@ class ToolKit():
     # TODO : Complete qa API and improve math API
     def call_qa_api(self, query: str):
         # print("QA API not implemented yet")
-
+        print("variables: ", self.variables)
+        print("\n=================Calling SERP API=================")
+        print(query)
         params = {
             "q": query,
             "location": "Austin, Texas, United States",
             "hl": "en",
             "gl": "us",
             "google_domain": "google.com",
-            "api_key": "d3c1e5fa3b313bdea475bb3364f9fa9b5adc719cf26b26afd7502e7eef728e5e"
+            "api_key": "3df9d9a99f885a6e90092a5bddf979d38d14ac33cd4b3a33f098cd2acc373ba4"
         }
 
         search = GoogleSearch(params)
 
         results = search.get_dict()
-        result = results['answer_box']['snippet_highlighted_words']
+        try:
+            result = results['answer_box']['snippet_highlighted_words']
+        except:
+            try:
+                result = results['answer_box']['snippet']
+            except:
+                result = "[This type of question is not supported yet]"
         res = ''.join(result)
         return res
         # return input(query + " : ")

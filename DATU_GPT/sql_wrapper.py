@@ -25,7 +25,7 @@ class Database:
         with open(file_questions, 'r') as f:
             # Load the data from the csv file
             data = pd.read_csv(f, delimiter=';')
-            #data = data[88:]
+            data = data[78:]
             # max length question is 274
 
         missed_index = []
@@ -35,16 +35,16 @@ class Database:
         time_start = time.time()
         requests = 0
         tokens = 0
-        results = pd.DataFrame(columns=['id', 'question', 'our_model_answer', 'gpt_answer'])
+        results = pd.DataFrame(columns=['id', 'question', 'our_model_answer_bAPI', 'our_model_answer_aAPI', 'gpt_answer'])
 
         for question in tqdm(data["Questions"]):
-            answer, token, request = self.model.method_math_tool_answer(question)
+            answer, API_answer, token, request = self.model.method_data_qa_tool_answer(question)
             tokens += token
             requests += request
             gpt_answer, token, request = self.model.base_model_answer(question)
             tokens += token
             requests += request
-            results = results.append({'id': question_id, 'question': question, 'our_model_answer': answer, 'gpt_answer': gpt_answer}, ignore_index=True)
+            results = results.append({'id': question_id, 'question': question, 'our_model_answer_bAPI': answer, 'our_model_answer_aAPI': API_answer, 'gpt_answer': gpt_answer}, ignore_index=True)
             #string = f"INSERT INTO questions_answer_model (id, question, our_model_answer, our_model_reasoning, our_model_facts, gpt_answer) VALUES ({question_id}, '{question}', '{answer}', '{reasoning}', '{facts}', '{gpt_answer}');"
             #self.mycursor.execute(string)
             #self.db.commit()

@@ -14,8 +14,11 @@ class Manipulator():
         math = 'math'
         wiki = 'wiki'
         
-    def format_and_insert_var(self, var, result):
-        var = var.replace(",", "").replace("[", "").replace("]", "").replace(" ", "")
+    # def format_and_insert_var(self, var, result):
+    #     var = var.replace(",", "").replace("[", "").replace("]", "").replace(" ", "")
+    #     self.tool.variables[var] = str(result)
+
+    def insert_variable(self, var, result):
         self.tool.variables[var] = str(result)
 
     def replace_keys_with_values(self, s:str):
@@ -23,103 +26,188 @@ class Manipulator():
             s = s.replace(f"#{k}#", v)
         return s
 
-    def remove_pattern(self, text: str, pattern: str) -> tuple:
-        # Compile the regex pattern
-        regex_pattern = re.compile(pattern)
-        # Search for the pattern in the text
-        match = regex_pattern.search(text,re.UNICODE)
-        if match:
-            # Get the start index and end index of the match
-            start_index = match.start()
-            end_index = match.end()
-            # Remove the match from the text and save it as removed_pattern
-            text_before = text[:start_index]
-            text_after = text[end_index:]
-            removed_pattern = match.group(0)
-            text = text_before + text_after
-        else:
-            start_index = -1
-            removed_pattern = ""
-        return text, start_index, removed_pattern
+    # def remove_pattern(self, text: str, pattern: str) -> tuple:
+    #     # Compile the regex pattern
+    #     regex_pattern = re.compile(pattern)
+    #     # Search for the pattern in the text
+    #     match = regex_pattern.search(text,re.UNICODE)
+    #     if match:
+    #         # Get the start index and end index of the match
+    #         start_index = match.start()
+    #         end_index = match.end()
+    #         # Remove the match from the text and save it as removed_pattern
+    #         text_before = text[:start_index]
+    #         text_after = text[end_index:]
+    #         removed_pattern = match.group(0)
+    #         text = text_before + text_after
+    #     else:
+    #         start_index = -1
+    #         removed_pattern = ""
+    #     return text, start_index, removed_pattern
+
+    # def find_and_extract_all(self, text: str, pattern: str):
+    #     indexes = []
+    #     remove_patterns = []
+    #     new_text, index, removed_pattern = self.remove_pattern(text, pattern)
+    #     while index != -1:
+    #         indexes.append(index)
+    #         remove_patterns.append(removed_pattern)
+    #         new_text, index, removed_pattern = self.remove_pattern(new_text, pattern)
+    #     return indexes, remove_patterns, new_text
 
     def find_and_extract_all(self, text: str, pattern: str):
+        start_index = 0
         indexes = []
-        remove_patterns = []
-        new_text, index, removed_pattern = self.remove_pattern(text, pattern)
-        while index != -1:
-            indexes.append(index)
-            remove_patterns.append(removed_pattern)
-            new_text, index, removed_pattern = self.remove_pattern(new_text, pattern)
-        return indexes, remove_patterns, new_text
-
-    def insert_string(self, original_str, insert_str, pos):
-        return original_str[:pos] + '[' + insert_str + ']' + original_str[pos:]
-
-    def parse_math(self, text: str):
-        # indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_ ,()]*Calculator\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
-        indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[(?:.|\n)*?Calculator\((?:.|\n)*?\]')
-        delay = 0
-        for i in range(len(patterns_removed)):
-            split_pattern = patterns_removed[i].split('Calculator(')
-            expression = split_pattern[-1][:-2]
-            # replace variables
-            expression = self.replace_keys_with_values(expression)
-            try:
-                if expression.startswith('evaluate'):
-                    result = self.tool.solve_math_api(expression)
+        api_calls = []
+        variables = []
+        token_index = 0
+        while token_index != -1:
+            token_index = text.find("["+pattern+"(", start_index)
+            if token_index == -1:
+                token_index = text.find("[", start_index)
+                if token_index == -1:
+                    break
                 else:
-                    result = self.tool.call_math_api(expression)
-                text = self.insert_string(text, result, indexes[i] + delay)
-                delay = delay + len(result) + 2
-                if len(split_pattern) > 1:
-                    # adding variables to dictionary
-                    self.format_and_insert_var(split_pattern[0], result)
-            except NameError as e:
-                print(str(e))
+                    start_index = token_index + 1
+                    variable_index = text.find(", "+pattern+"(", start_index)
+                    if variable_index == -1:
+                        break
+                    variable = text[start_index:variable_index]
+                    start_index = variable_index + 3 + len(pattern)
+                    call_index = text.find(")]", start_index)
+                    api_call = text[start_index:call_index]
+                    indexes.append((token_index, call_index+2))
+                    api_calls.append(api_call)
+                    variables.append(variable)
+            else:
+                start_index = token_index + 2 + len(pattern)
+                call_index = text.find(")]", start_index)
+                api_call = text[start_index:call_index]
+                indexes.append((token_index, call_index+2))
+                api_calls.append(api_call)
+                variables.append("unsaved")
+        return indexes, api_calls, variables
+
+    def string_replace(self, text, positions, replace):
+        add = 0
+        for i, response in enumerate(replace):
+            text = text[:positions[i][0]+add] + "[" + response + "]" + text[positions[i][1]+add:]
+            string_len = len(response)+2
+            replace_len = positions[i][1] - positions[i][0]
+            add += string_len - replace_len
         return text
 
-    def parse_wiki(self, text: str):
-        # find pattern remove and keep index start
-        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[Wiki\(.+?\)\]')
-        delay = 0
-        for i in range(len(paterns_removed)):
-            patern_removed = patern_removed[7:-2]
-            try:
-                # call wiki api
-                result = self.tool.call_wiki_API(patern_removed)
-                text = self.insert_string(text, result, indexes[i] + delay)
-                delay = delay + len(result) + 2
-            except NameError as e:
-                print(str(e))
+    # def insert_string(self, original_str, insert_str, pos):
+    #     return original_str[:pos] + '[' + insert_str + ']' + original_str[pos:]
+
+
+    # def parse_math(self, text: str):
+    #     # indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_ ,()]*Calculator\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
+    #     indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[(?:.|\n)*?Calculator\((?:.|\n)*?\]')
+    #     delay = 0
+    #     for i in range(len(patterns_removed)):
+    #         split_pattern = patterns_removed[i].split('Calculator(')
+    #         expression = split_pattern[-1][:-2]
+    #         # replace variables
+    #         expression = self.replace_keys_with_values(expression)
+    #         try:
+    #             if expression.startswith('solve'):
+    #                 result = self.tool.solve_math_api(expression)
+    #             else:
+    #                 result = self.tool.call_math_api(expression)
+    #             text = self.insert_string(text, result, indexes[i] + delay)
+    #             delay = delay + len(result) + 2
+    #             if len(split_pattern) > 1:
+    #                 # adding variables to dictionary
+    #                 self.format_and_insert_var(split_pattern[0], result)
+    #         except NameError as e:
+    #             print(str(e))
+    #     return text
+
+    def math_parser(self, text: str):
+        indexes, api_calls, variables = self.find_and_extract_all(text, "Calculator")
+        results = []
+        if len(indexes) > 0:
+            for i, call in enumerate(api_calls):
+                # replace variables
+                call = self.replace_keys_with_values(call)
+                if call.startswith('solve'):
+                    results.append(self.tool.solve_math_api(call))
+                else:
+                    results.append(self.tool.call_math_api(call))
+                if variables[i] != "unsaved":
+                    self.insert_variable(variables[i], results[i])
+            text = self.string_replace(text, indexes, results)
         return text
 
-    def parse_qa(self, text: str):
-        # find patten remove and keep index start
-        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[(?:.|\n)*?QA\((?:.|\n)*?\]')
-        delay = 0
-        for i in range(len(paterns_removed)):
-            split_pattern = paterns_removed[i].split('QA(')
-            patern_removed = split_pattern[-1][:-2]
-            # replace variables
-            patern_removed = self.replace_keys_with_values(patern_removed)
-            try:
-                # call qa api
-                result = self.tool.call_qa_api(patern_removed)
-                text = self.insert_string(text, result, indexes[i] + delay)
-                delay = delay + len(result) + 2
-                if len(split_pattern) > 1:
-                    if len(split_pattern) > 1:
-                        self.format_and_insert_var(split_pattern[0], result)
-            except NameError as e:
-                print(str(e))
+    def qa_parser(self, text: str):
+        indexes, api_calls, variables = self.find_and_extract_all(text, "QA")
+        results = []
+        if len(indexes) > 0:
+            for i, call in enumerate(api_calls):
+                # replace variables
+                call = self.replace_keys_with_values(call)
+                results.append(self.tool.call_qa_api(call))
+                if variables[i] != "unsaved":
+                    self.insert_variable(variables[i], results[i])
+            text = self.string_replace(text, indexes, results)
         return text
+
+    def wiki_parser(self, text: str):
+        indexes, api_calls, variables = self.find_and_extract_all(text, "Wiki")
+        delay = 0
+        results = []
+        if len(indexes) > 0:
+            for i, call in enumerate(api_calls):
+                # replace variables
+                call = self.replace_keys_with_values(call)
+                results.append(self.tool.call_wiki_api(call))
+                if variables[i] != "unsaved":
+                    self.insert_variable(variables[i], results[i])
+            text = self.string_replace(text, indexes, results)
+        return text
+
+    # def parse_wiki(self, text: str):
+    #     # find pattern remove and keep index start
+    #     indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[Wiki\(.+?\)\]')
+    #     delay = 0
+    #     for i in range(len(paterns_removed)):
+    #         patern_removed = patern_removed[7:-2]
+    #         try:
+    #             # call wiki api
+    #             result = self.tool.call_wiki_API(patern_removed)
+    #             text = self.insert_string(text, result, indexes[i] + delay)
+    #             delay = delay + len(result) + 2
+    #         except NameError as e:
+    #             print(str(e))
+    #     return text
+    #
+    # def parse_qa(self, text: str):
+    #     # find patten remove and keep index start
+    #     indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[(?:.|\n)*?QA\((?:.|\n)*?\]')
+    #     delay = 0
+    #     for i in range(len(paterns_removed)):
+    #         split_pattern = paterns_removed[i].split('QA(')
+    #         patern_removed = split_pattern[-1][:-2]
+    #         # replace variables
+    #         patern_removed = self.replace_keys_with_values(patern_removed)
+    #         try:
+    #             # call qa api
+    #             result = self.tool.call_qa_api(patern_removed)
+    #             text = self.insert_string(text, result, indexes[i] + delay)
+    #             delay = delay + len(result) + 2
+    #             if len(split_pattern) > 1:
+    #                 if len(split_pattern) > 1:
+    #                     self.format_and_insert_var(split_pattern[0], result)
+    #         except NameError as e:
+    #             print(str(e))
+    #     return text
 
     def get_content(self, input):
-        print(input)
         return input["choices"][0]["message"]["content"], input['usage']['total_tokens']
 
     def extract_API_call(self, input):
-        return self.parse_math(self.parse_wiki(self.parse_qa(input)))
+        return self.math_parser(self.wiki_parser(self.qa_parser(input)))
 
     def reformat_sub_answers(self, answers, grammarModel):
        return [grammarModel.parse(answer) for answer in answers]

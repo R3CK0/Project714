@@ -65,7 +65,7 @@ class DATU:
     def method_data_qa_tool_answer(self, question):
         answer, tokens = self.manipulator.get_content(self.divineBeastModel.getAnswer(question, "[QA]"))
         self.manipulator.clear_Toolkit()
-        return self.manipulator.extract_API_call(answer), tokens, 1
+        return answer, self.manipulator.extract_API_call(answer), tokens, 1
 
     def base_model_answer(self, question):
         answer, tokens = self.manipulator.get_content(self.divineBeastModel.getAnswer(question, "[Base]"))
@@ -74,4 +74,4 @@ class DATU:
     def method_math_tool_answer(self, equation):
         answer, tokens = self.manipulator.get_content(self.divineBeastModel.getAnswer(equation, "[Math]"))
         self.manipulator.clear_Toolkit()
-        return self.manipulator.extract_API_call(answer), tokens, 1
+        return answer, self.manipulator.extract_API_call(answer), tokens, 1
