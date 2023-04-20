@@ -25,7 +25,7 @@ class Manipulator():
 
     def remove_pattern(self, text: str, pattern: str) -> tuple:
         # Compile the regex pattern
-        regex_pattern = re.compile(pattern.format())
+        regex_pattern = re.compile(pattern)
         # Search for the pattern in the text
         match = regex_pattern.search(text,re.UNICODE)
         if match:
@@ -56,7 +56,8 @@ class Manipulator():
         return original_str[:pos] + '[' + insert_str + ']' + original_str[pos:]
 
     def parse_math(self, text: str):
-        indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_ ,()]*Calculator\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
+        # indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_ ,()]*Calculator\([^\]]*[a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
+        indexes, patterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\-_ ,()]*Calculator\((?:.|\n)*?\)\]')
         delay = 0
         for i in range(len(patterns_removed)):
             split_pattern = patterns_removed[i].split('Calculator(')
@@ -94,7 +95,7 @@ class Manipulator():
 
     def parse_qa(self, text: str):
         # find patten remove and keep index start
-        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\- _,()]*QA\([^\]]*[ a-zA-Z0-9\u2200-\u22FF][^\]]*\)\]')
+        indexes, paterns_removed, text = self.find_and_extract_all(text, r'\[[a-zA-Z0-9\- _,()]*QA\((?:.|\n)*?\)\]')
         delay = 0
         for i in range(len(paterns_removed)):
             split_pattern = paterns_removed[i].split('QA(')
@@ -114,6 +115,7 @@ class Manipulator():
         return text
 
     def get_content(self, input):
+        print(input)
         return input["choices"][0]["message"]["content"], input['usage']['total_tokens']
 
     def extract_API_call(self, input):
