@@ -32,13 +32,14 @@ class ToolKit():
         print("variables: ", self.variables)
         print("\n=================Calling SERP API=================")
         print(query)
+        #TODO: Insert SERP API key here
         params = {
             "q": query,
             "location": "Austin, Texas, United States",
             "hl": "en",
             "gl": "us",
             "google_domain": "google.com",
-            "api_key": "3df9d9a99f885a6e90092a5bddf979d38d14ac33cd4b3a33f098cd2acc373ba4"
+            "api_key": "API key HERE"
         }
 
         search = GoogleSearch(params)
@@ -66,7 +67,8 @@ class ToolKit():
         print("variables: ", self.variables)
         print("\n=================Calling math API=================")
         print(query)
-        params = {"appid": '74UV94-Q95PR46UGT', "i": query}
+        #TODO: Insert Wolfram API key here
+        params = {"appid": 'API key HERE', "i": query}
         result = self.make_request("http://api.wolframalpha.com/v2/result", params)
         if result is None:
             result = "Error: Invalid expression"
@@ -76,8 +78,9 @@ class ToolKit():
     def solve_math_api(self, query:str):
 
         query = urllib.parse.quote_plus(query)
+        #TODO: Insert Wolfram API key here
         query_url = f"http://api.wolframalpha.com/v2/query?" \
-                    f"appid=74UV94-Q95PR46UGT" \
+                    f"appid=API key HERE" \
                     f"&input={query}" \
                     f"&includepodid=Result" \
                     f"&output=json"
