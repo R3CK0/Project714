@@ -8,7 +8,7 @@ def main():
     model = DATU(API_KEY)
     sql_script = Database(model)
     #sql_script.create_table()
-    sql_script.fill_database("fact_questions_simple.csv")
+    sql_script.fill_database("questions/fact_questions.csv")
 
     # model 1
     #answer0, subquestions, facts, tokens = model.method_decomp_answer(question)

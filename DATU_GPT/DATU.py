@@ -42,25 +42,31 @@ class DATU:
     def method_complex_tool_answer(self, question):
         # get list of decomposed question
         tokens = 0
-        response, token = "\n".join(self.decomp_model.getSubQuestions(question))
+        requests = 3
+        responses, token = self.decomp_model.getSubQuestions(question)
         tokens = tokens + token
 
         # Obtain the API requests to complete the sub answers
-        sub_answers, token = self.manipulator.get_content(self.divineBeastModel.getAnswer(question + "\n" + response))
-        tokens = tokens + token
+        facts = "Main Question: " + question + "\n"
+        answers = []
+        for response in responses:
+            sub_answer, token = self.manipulator.get_content(self.divineBeastModel.getAnswer(facts + "\nQuestion: " + response, self.model_selector.getModel(response)))
+            answers.append(sub_answer)
+            sub_answer = self.manipulator.extract_API_call(sub_answer)
+            tokens = tokens + token
+            facts = facts + "\nFact: " + sub_answer
+            requests += 2
         # extract the API call from the sub question and apply tools to obtain sub_answers
-        sub_answers, token = self.manipulator.extract_API_call(sub_answers)
-        tokens = tokens + token
         # Reformat the sub_answers to the correct format
-        #sub_answers = self.manipulator.get_content(self.grammarParserModel.parse(sub_answers))
+        #sub_answers = self.manipulator.get_content(self.grammarParserModel.parse(facts))
 
         # recompile the sub_answers and main question into an answer and justification
-        answer, token = self.recomp_model.getRecomp("Question: " + question + "\nFacts: " + sub_answers)
+        answer, token = self.recomp_model.getRecomp(facts)
         tokens = tokens + token
         # clear variables
         self.manipulator.clear_Toolkit()
         
-        return answer, response, sub_answers, tokens, 3
+        return answer, "\n".join(responses), "\n".join(answers), facts, tokens, requests
 
     def method_data_qa_tool_answer(self, question):
         answer, tokens = self.manipulator.get_content(self.divineBeastModel.getAnswer(question, "[QA]"))

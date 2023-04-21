@@ -5,53 +5,68 @@ class ModelSelector:
         pass
 
     def getModel(self, question):
-        try:
-            answer = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are an assistant is a classification model that classifies questions in order for them to be answered by one of four tools: Wiki, Math, QA, Human."},
-                                                                                 {"role": "user", "content": "Can you tell me about the history of the Taj Mahal?"},
-                                                                                 {"role": "assistant", "content": "[Wiki]"},
-                                                                                 {"role": "user", "content": "What is the square root of 64?"},
-                                                                                 {"role": "assistant", "content": "[Math]"},
-                                                                                 {"role": "user", "content": "What is the best way to learn a new language?"},
-                                                                                 {"role": "assistant", "content": "[QA]"},
-                                                                                 {"role": "user", "content": "What is your favorite movie?"},
-                                                                                 {"role": "assistant", "content": "[Human]"},
-                                                                                 {"role": "user", "content": "What is the definition of an adjective?"},
-                                                                                 {"role": "assistant", "content": "[Wiki]"},
-                                                                                 {"role": "user", "content": "How do I make pancakes from scratch?"},
-                                                                                 {"role": "assistant", "content": "[QA]"},
-                                                                                 {"role": "user", "content": "What is the population of Tokyo?"},
-                                                                                 {"role": "assistant", "content": "[Wiki]"},
-                                                                                 {"role": "user", "content": "What is the value of e?"},
-                                                                                 {"role": "assistant", "content": "[Math]"},
-                                                                                 {"role": "user", "content": "What is the meaning of life?"},
-                                                                                 {"role": "assistant", "content": "[QA]"},
-                                                                                 {"role": "user", "content": "What is your favorite color?"},
-                                                                                 {"role": "assistant", "content": "[Human]"},
-                                                                                 {"role": "user", "content": "Can you explain the process of photosynthesis?"},
-                                                                                 {"role": "assistant", "content": "[Wiki]"},
-                                                                                 {"role": "user", "content": "What is the sum of 2+2?"},
-                                                                                 {"role": "assistant", "content": "[Math]"},
-                                                                                 {"role": "user", "content": "What are the symptoms of COVID-19?"},
-                                                                                 {"role": "assistant", "content": "[QA]"},
-                                                                                 {"role": "user", "content": "What is your favorite book?"},
-                                                                                 {"role": "assistant", "content": "[Human]"},
-                                                                                 {"role": "user", "content": "What is the capital of France?"},
-                                                                                 {"role": "assistant", "content": "[Wiki]"},
-                                                                                 {"role": "user", "content": "How can I improve my writing skills?"},
-                                                                                 {"role": "assistant", "content": "[QA]"},
-                                                                                 {"role": "user", "content": "What is the height of Mount Everest?"},
-                                                                                 {"role": "assistant", "content": "[Wiki]"},
-                                                                                 {"role": "user", "content": "What is the value of pi?"},
-                                                                                 {"role": "assistant", "content": "[Math]"},
-                                                                                 {"role": "user", "content": "What is the difference between affect and effect?"},
-                                                                                 {"role": "assistant", "content": "[QA]"},
-                                                                                 {"role": "user", "content": "What is your favorite type of music?"},
-                                                                                 {"role": "assistant", "content": "[Human]"},
-                                                                                 {"role":"user", "content":"What are the coordinates of the two points?"},
-                                                                                 {"role":"assistant", "content":"[Human]"},
+        answer = None
+        while answer != "[Wiki]" and answer != "[Math]" and answer != "[QA]" and answer != "[Human]":
+            answer = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "system", "content": "You are a classification model that classifies questions by the type they should be answered by Wiki, Math, QA, Human. for example: "
+                                                                                                                 "\nQuestion: Can you tell me about the history of the Taj Mahal?"
+                                                                                                                 "\nAnswer: [Wiki]\n"
+                                                                                                                 "\nQuestion: What is the square root of 64?"
+                                                                                                                 "\nAnswer: [Math]\n"
+                                                                                                                 "\nQuestion: What is the best way to learn a new language?"
+                                                                                                                 "\nAnswer: [QA]\n"
+                                                                                                                 "\nQuestion: What is your favorite movie?"
+                                                                                                                 "\nAnswer: [Human]\n"
+                                                                                                                 "\nQuestion: What is the definition of an adjective?"
+                                                                                                                 "\nAnswer: [Wiki]\n"
+                                                                                                                 "\nQuestion: How many representants are in the senate?"
+                                                                                                                 "\nAnswer: [QA]\n"
+                                                                                                                 "\nQuestion: What is the population of Tokyo?"
+                                                                                                                 "\nAnswer: [QA]\n"},
+                                                                                 # {"role": "user", "content": "Can you tell me about the history of the Taj Mahal?"},
+                                                                                 # {"role": "assistant", "content": "[Wiki]"},
+                                                                                 # {"role": "user", "content": "What is the square root of 64?"},
+                                                                                 # {"role": "assistant", "content": "[Math]"},
+                                                                                 # {"role": "user", "content": "What is the best way to learn a new language?"},
+                                                                                 # {"role": "assistant", "content": "[QA]"},
+                                                                                 # {"role": "user", "content": "What is your favorite movie?"},
+                                                                                 # {"role": "assistant", "content": "[Human]"},
+                                                                                 # {"role": "user", "content": "What is the definition of an adjective?"},
+                                                                                 # {"role": "assistant", "content": "[Wiki]"},
+                                                                                 # {"role": "user", "content": "How do I make pancakes from scratch?"},
+                                                                                 # {"role": "assistant", "content": "[QA]"},
+                                                                                 # {"role": "user", "content": "What is the population of Tokyo?"},
+                                                                                 # {"role": "assistant", "content": "[Wiki]"},
+                                                                                 # {"role": "user", "content": "What is the value of e?"},
+                                                                                 # {"role": "assistant", "content": "[Math]"},
+                                                                                 # {"role": "user", "content": "What is the meaning of life?"},
+                                                                                 # {"role": "assistant", "content": "[QA]"},
+                                                                                 # {"role": "user", "content": "What is your favorite color?"},
+                                                                                 # {"role": "assistant", "content": "[Human]"},
+                                                                                 # {"role": "user", "content": "Can you explain the process of photosynthesis?"},
+                                                                                 # {"role": "assistant", "content": "[Wiki]"},
+                                                                                 # {"role": "user", "content": "What is the sum of 2+2?"},
+                                                                                 # {"role": "assistant", "content": "[Math]"},
+                                                                                 # {"role": "user", "content": "What are the symptoms of COVID-19?"},
+                                                                                 # {"role": "assistant", "content": "[QA]"},
+                                                                                 # {"role": "user", "content": "What is your favorite book?"},
+                                                                                 # {"role": "assistant", "content": "[Human]"},
+                                                                                 # {"role": "user", "content": "What is the capital of France?"},
+                                                                                 # {"role": "assistant", "content": "[Wiki]"},
+                                                                                 # {"role": "user", "content": "How can I improve my writing skills?"},
+                                                                                 # {"role": "assistant", "content": "[QA]"},
+                                                                                 # {"role": "user", "content": "What is the height of Mount Everest?"},
+                                                                                 # {"role": "assistant", "content": "[Wiki]"},
+                                                                                 # {"role": "user", "content": "What is the value of pi?"},
+                                                                                 # {"role": "assistant", "content": "[Math]"},
+                                                                                 # {"role": "user", "content": "What is the difference between affect and effect?"},
+                                                                                 # {"role": "assistant", "content": "[QA]"},
+                                                                                 # {"role": "user", "content": "What is your favorite type of music?"},
+                                                                                 # {"role": "assistant", "content": "[Human]"},
+                                                                                 # {"role":"user", "content":"What are the coordinates of the two points?"},
+                                                                                 # {"role":"assistant", "content":"[Human]"},
                                                                                  {"role": "user", "content": question}], max_tokens=500)
-        except:
-            print("Error: ModelSelectorModel")
+            answer = answer["choices"][0]["message"]["content"]
+            question = question + "\n\nOnly answer by [Wiki], [Math], [QA]"
         return answer
 
 class GrammarParser:
@@ -89,7 +104,7 @@ class AnswerModel:
                 return self.base_model_answer(question)
             elif type == "[Human]":
                 return self.humanAnswer(question)
-            else:
+            elif type == "[Complete]":
                 return self.completeAnswerModel(question)
         except:
             print("Error: AnswerModel")
@@ -267,7 +282,6 @@ class AnswerModel:
                                                       {"role": "user", "content": question}], max_tokens=500)
 
     def completeAnswerModel(self, query):
-        print("completeAnswerModel")
         answer = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[
             {"role": "system",
              "content": "You are a model who answer questions with the use of outside tools. The tools allow to access computing and API of different websites to obtain correct results. These are the tools : [Calculator(equation)], [Wiki(subject)], [QA(question)].\n - The Calculator tool is used to solve numerical equations as well as to resolve complex algebraic equations such as calculus problems.\n- The Wiki tool allows to obtain verified information on a subject.\n- The QA tool is used to answer common knowledge questions questions. \nThe assistant is given a main question as well as subquestions that when answered can help produce a better answer to the main question."},

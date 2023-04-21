@@ -22,10 +22,9 @@ class ToolKit():
             return None
 
     def call_wiki_API(self, query: str):
-        wiki_wiki = wikipediaapi.Wikipedia('en')
-        search_results = wiki_wiki.search(query)
-        page = wiki_wiki.page(search_results[0])
-        return page.summary
+        wiki = wikipediaapi.Wikipedia('en')
+        page = wiki.page(query)
+        return wiki.extracts(page, exsentences=2)
 
     # TODO : Complete qa API and improve math API
     def call_qa_api(self, query: str):
@@ -51,11 +50,15 @@ class ToolKit():
             try:
                 result = results['answer_box']['snippet']
             except:
-                result = "[This type of question is not supported yet]"
+                try:
+                    result = results['organic_results']['snippet_highlighted_words']
+                except:
+                    try:
+                        result = results['organic_results']['snippet']
+                    except:
+                        result = "[This type of question is not supported yet]"
         res = ''.join(result)
         return res
-        # return input(query + " : ")
-        # return "replace this part using you best judgement"
 
     
 
@@ -93,7 +96,3 @@ class ToolKit():
 
     def clear_toolKit(self):
         self.variables.clear()
-
-
-# tool = ToolKit()
-# print(tool.call_math_api('d(7x)/dx'))
